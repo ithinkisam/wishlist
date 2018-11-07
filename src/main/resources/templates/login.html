@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html th:replace="~{basic :: basic(~{::title}, ~{}, ~{::section}, ~{})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Login</title>
+</head>
+<body>
+<section>
+	<h1 class="h2">Welcome Back</h1>
+	<p class="lead">Log in to your account to continue</p>
+	<div th:if="${param.m != null}" class="alert alert-success" role="alert" th:text="#{${param.m}}"></div>
+	<form action="login" method="post">
+	    <div class="form-group">
+	        <input class="form-control" type="email" placeholder="Email Address" name="login-email" required />
+	    </div>
+	    <div class="form-group">
+	        <input class="form-control" type="password" placeholder="Password" name="login-password" required />
+	        <div class="text-right">
+	            <small><a href="forgot-password">Forgot password?</a>
+	            </small>
+	        </div>
+	    </div>
+	    <button class="btn btn-lg btn-block btn-primary" role="button" type="submit">
+	        Log in
+	    </button>
+	    <small>Don't have an account yet? <a href="registration">Create one</a></small>
+	</form>
+		
+</section>
+</body>
+</html>

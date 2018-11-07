@@ -1,0 +1,19 @@
+.nav-item {
+	padding-right: 1em;
+}
+
+.avatar-container {
+	position: relative;
+}
+
+.avatar-alt {
+	position: absolute;
+	top: 52.5%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	color: white;
+}
+
+.bg-dark .avatar {
+	box-shadow: 0 0 2px 2px #343a40 inset;
+}
