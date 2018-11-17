@@ -14,8 +14,10 @@ REPLACE INTO user (user_id, active, email, first_name, last_name, password) VALU
 REPLACE INTO user_role (user_id, role_id) VALUES (3, 2);
 REPLACE INTO user_profile (user_id, profile_key, profile_value) VALUES (3, 'color', 'orange');
 
-REPLACE INTO wish (wish_id, description, price_minimum, price_maximum, user_id) VALUES (1, 'Test wish with a much longer name', 18, 25, 1);
-REPLACE INTO wish (wish_id, description, price_minimum, price_maximum, user_id) VALUES (2, 'Suzie Talks-alot', 29.99, 29.99, 1);
+REPLACE INTO wish (wish_id, description, price_minimum, price_maximum, user_id, purchased) VALUES (1, 'Test wish with a much longer name', 18, 25, 1, false);
+REPLACE INTO wish (wish_id, description, price_minimum, price_maximum, user_id, purchased) VALUES (2, 'Suzie Talks-alot', 29.99, 29.99, 1, false);
+REPLACE INTO wish (wish_id, description, price_minimum, price_maximum, user_id, purchased, purchaser_id) VALUES (3, 'A google of my very own', 99.99, 99.99, 1, true, 2);
+REPLACE INTO wish (wish_id, description, price_minimum, price_maximum, user_id, purchased, purchaser_id) VALUES (4, 'Something special', 49.98, 49.98, 1, true, 3);
 
 REPLACE INTO wish_reference (reference_id, wish_id, url) VALUES (1, 1, 'https://www.amazon.com');
 

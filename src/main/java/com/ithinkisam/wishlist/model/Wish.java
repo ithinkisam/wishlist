@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ithinkisam.wishlist.model.support.Range;
 import com.ithinkisam.wishlist.model.support.Reference;
 
@@ -32,6 +33,7 @@ public class Wish {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
+	@JsonIgnore
 	private User user;
 	
 	private String description;
@@ -49,6 +51,7 @@ public class Wish {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "purchaser_id")
+	@JsonIgnore
 	private User purchaser;
 	
 	public void addReference(Reference reference) {

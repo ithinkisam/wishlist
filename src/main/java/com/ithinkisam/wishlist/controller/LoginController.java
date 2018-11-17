@@ -43,7 +43,7 @@ public class LoginController {
 		
 		if (!bindingResult.hasErrors() && userService.registerUser(userRegistration)) {
 			model.addAttribute("m", "registration.success");
-			return "redirect:/login";
+			return "redirect:/login?m=registration.success&mtype=success";
 		}
 		return "registration";
 	}

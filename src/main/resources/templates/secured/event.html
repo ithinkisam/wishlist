@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html th:replace="~{main :: main(~{::title}, ~{}, ~{::section}, ~{})}" xmlns:th="http://thymeleaf.com">
+<head>
+	<title th:text="${event.title}">Event</title>
+</head>
+<body>
+<section>
+	<div class="page-header">
+		<h1 th:text="${event.title}">Event title</h1>
+		<p class="lead" th:text="${event.description}">description</p>
+	</div>
+	<hr>
+	<div class="content-list-body row">
+		<div class="col-3">
+			<div class="nav nav-tabs flex-column" id="event-nav-tabs" role="tablist" aria-orientation="vertical">
+				<h4 class="mt-2 text-center">Members</h4>
+				<a th:each="member,iter : ${event.members}" th:if="${member.id != user.id}" class="nav-link mx-2 my-1" th:classappend="${iter.first || (iter.index == 1 && event.members[0].id == user.id)} ? 'active' : ''" data-toggle="pill" role="tab" th:href="@{#event-member-{memberId}(memberId=${member.id})}">
+					<span class="avatar-container">
+						<img alt="Image" th:src="'/img/avatar-' + ${member.profileValue('color')} + '.jpg'" class="avatar" />
+						<span class="avatar-alt" th:text="${member.firstName.charAt(0)} + ${member.lastName.charAt(0)}"></span>
+					</span>
+					<span th:text="${member.firstName}"></span>
+				</a>
+			</div>
+		</div>
+		<div class="col-9">
+			<div class="tab-content" id="event-nav-tab-content">
+				<div class="tab-pane fade" th:each="member,iter : ${event.members}" th:if="${member.id != user.id}" th:classappend="${iter.first || (iter.index == 1 && event.members[0].id == user.id)} ? 'active show' : ''" role="tab" th:id="'event-member-' + ${member.id}">
+					<!-- Available wishes -->
+					<div class="card-list">
+						<div class="card-list-head">
+							<h6>Available items</h6>
+						</div>
+						<div class="card card-task" th:each="wish : ${member.wishes}" th:if="${!wish.purchased}">
+							<div class="progress">
+								<div class="progress-bar bg-success" role="progressbar" style="width: 100%"></div>
+							</div>
+							<div class="card-body">
+								<div class="card-title">
+									<h6 th:text="${wish.description}"></h6>
+									<span class="text-small" th:text="${wish.price.price}"></span>
+								</div>
+								<div class="dropdown card-options">
+									<button class="btn-options" type="button" id="task-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="material-icons">more_vert</i>
+									</button>
+									<div class="dropdown-menu dropdown-menu-right">
+										<a href="#" class="dropdown-item">I bought this</a>
+										<a href="#" class="dropdown-item">Suggest this item</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<!-- Purchased wishes -->
+					<div class="card-list">
+						<div class="card-list-head">
+							<h6>Purchased items</h6>
+						</div>
+						<div class="card card-task" th:each="wish : ${member.wishes}" th:if="${wish.purchased}">
+							<div class="progress">
+								<div class="progress-bar" th:classappend="${wish.purchaser.id == user.id ? 'bg-info' : 'bg-danger'}" role="progressbar" style="width: 100%"></div>
+							</div>
+							<div class="card-body">
+								<div class="card-title">
+									<h6 th:text="${wish.description}"></h6>
+									<span class="text-small" th:text="${wish.price.price}"></span>
+								</div>
+								<div class="dropdown card-options" th:if="${wish.purchaser.id == user.id}">
+									<button class="btn-options" type="button" id="task-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="material-icons">more_vert</i>
+									</button>
+									<div class="dropdown-menu dropdown-menu-right">
+										<a href="#" class="dropdown-item">I returned this</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+</body>
+</html>

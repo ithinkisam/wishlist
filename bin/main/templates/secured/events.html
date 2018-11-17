@@ -5,49 +5,43 @@
 </head>
 <body>
 <section>
-	<div class="container">
-		<div class="row justify-content-center">
-			<div class="col-xl-10 col-lg-11">
-				<div class="page-header">
-					<h1>Events</h1>
-					<p class="lead">Description of events page goes here.</p>
+	<div class="page-header">
+		<h1>Events</h1>
+		<p class="lead">Description of events page goes here.</p>
+	</div>
+	<hr>
+	<div class="content-list-body row">
+		<div th:each="event : ${memberEvents}" class="col-lg-6">
+			<div class="card card-team">
+				<div class="progress">
+					<div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
 				</div>
-				<hr>
-				<div class="content-list-body row">
-					<div th:each="event : ${memberEvents}" class="col-lg-6">
-						<div class="card card-team">
-							<div class="progress">
-								<div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-							</div>
-							<div class="card-body">
-								<div class="dropdown card-options">
-									<button class="btn-options" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<i class="material-icons">more_vert</i>
-									</button>
-									<div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item">Details</a>
-										<div th:if="${adminEvents.contains(event)}">
-											<div class="dropdown-divider"></div>
-											<a class="dropdown-item">Manage</a>
-										</div>
-									</div>
-								</div>
-								<div class="card-title">
-									<a href="#"><h5 th:text="${event.title}">Event Title</h5></a>
-									<span>
-										<span th:text="${{event.date}}">mm/dd/yyyy</span><br>
-										<span th:text="${event.members.size()}"></span> Members
-									</span>
-								</div>
-								<ul class="avatars">
-									<li th:each="user : ${event.members}" class="avatar-container">
-										<img alt="Image" th:src="'/img/avatar-' + ${user.profileValue('color')} + '.jpg'" class="avatar" />
-										<span class="avatar-alt" th:text="${user.firstName.charAt(0)} + ${user.lastName.charAt(0)}"></span>
-									</li>
-								</ul>
+				<div class="card-body">
+					<div class="dropdown card-options">
+						<button class="btn-options" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<i class="material-icons">more_vert</i>
+						</button>
+						<div class="dropdown-menu dropdown-menu-right">
+							<a class="dropdown-item">Details</a>
+							<div th:if="${adminEvents.contains(event)}">
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item">Manage</a>
 							</div>
 						</div>
 					</div>
+					<div class="card-title">
+						<a th:href="@{/events/{eventId}(eventId=${event.id})}"><h5 th:text="${event.title}">Event Title</h5></a>
+						<span>
+							<span th:text="${{event.date}}">mm/dd/yyyy</span><br>
+							<span th:text="${event.members.size()}"></span> Members
+						</span>
+					</div>
+					<ul class="avatars">
+						<li th:each="user : ${event.members}" class="avatar-container">
+							<img alt="Image" th:src="'/img/avatar-' + ${user.profileValue('color')} + '.jpg'" class="avatar" />
+							<span class="avatar-alt" th:text="${user.firstName.charAt(0)} + ${user.lastName.charAt(0)}"></span>
+						</li>
+					</ul>
 				</div>
 			</div>
 		</div>

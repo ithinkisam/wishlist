@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ithinkisam.wishlist.model.Wish;
 
 import lombok.Data;
@@ -30,6 +31,7 @@ public class Reference {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "wish_id")
+	@JsonIgnore
 	private Wish wish;
 	
 	@Override

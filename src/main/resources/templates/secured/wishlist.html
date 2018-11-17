@@ -1,60 +1,55 @@
 <!DOCTYPE html>
-<html th:replace="~{main :: main(~{::title}, ~{}, ~{::section}, ~{})}" xmlns:th="http://thymeleaf.com">
+<html th:replace="~{main :: main(~{::title}, ~{}, ~{::section}, ~{::script})}" xmlns:th="http://thymeleaf.com">
 <head>
 	<title>Wishlist</title>
 </head>
 <body>
 <section>
-	<div class="container">
-		<div class="row justify-content-center">
-			<div class="col-xl-10 col-lg-11">
-				<div class="page-header">
-					<h1>My Wishlist</h1>
-					<p class="lead">Description of wishlist goes here.</p>
-				</div>
-				<hr>
-				<div class="content-list">
-					<div class="content-list-body row">
-						<div th:each="wish : ${user.wishes}" class="col-lg-12">
-							<div class="card card-task">
-							  <div class="progress">
-							    <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-							  </div>
-							  <div class="card-body">
-							    <div class="card-title">
-							      <h6 th:text="${wish.description}">Wish description goes here</h6>
-							      <!-- <span class="text-small">Due Tomorrow</span> -->
-							    </div>
-							    <div class="card-meta">
-							      <ul class="avatars">
-						      	    <li th:each="reference : ${wish.references}"><a th:href="${reference.url}" target="_blank"><i class="fal fa-link fa-lg fa-fw"></i></a></li>
-							      </ul>
-							      <div class="d-flex align-items-center">
-							        <!-- <i class="material-icons">playlist_add_check</i> -->
-							        <span th:text="${wish.price.price}"></span>
-							      </div>
-							      <div class="dropdown card-options">
-							        <button class="btn-options" type="button" id="task-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							          <i class="material-icons">more_vert</i>
-							        </button>
-							        <div class="dropdown-menu dropdown-menu-right">
-							          <a class="dropdown-item" th:attr="data-wish-id=${wish.id}" href="#">Edit</a>
-							          <div class="dropdown-divider"></div>
-							          <a class="dropdown-item text-danger" th:attr="data-wish-id=${wish.id}" href="#">Delete</a>
-							        </div>
-							      </div>
-							    </div>
-							  </div>
-							</div><!--end of task-->	
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-12">
-						<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#new-wish-modal">Make a wish</button>
-					</div>
-				</div>
+	<div class="page-header">
+		<h1>My Wishlist</h1>
+		<p class="lead">Description of wishlist goes here.</p>
+	</div>
+	<hr>
+	<div class="content-list">
+		<div class="content-list-body row">
+			<div th:each="wish : ${user.wishes}" class="col-lg-12">
+				<div class="card card-task">
+				  <div class="progress">
+				    <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+				  </div>
+				  <div class="card-body">
+				    <div class="card-title">
+				      <h6 th:text="${wish.description}">Wish description goes here</h6>
+				      <!-- <span class="text-small">Due Tomorrow</span> -->
+				    </div>
+				    <div class="card-meta">
+				      <ul class="avatars">
+			      	    <li th:each="reference : ${wish.references}"><a th:href="${reference.url}" target="_blank"><i class="fal fa-link fa-lg fa-fw"></i></a></li>
+				      </ul>
+				      <div class="d-flex align-items-center">
+				        <!-- <i class="material-icons">playlist_add_check</i> -->
+				        <span th:text="${wish.price != null ? wish.price.price : 'N/A'}"></span>
+				      </div>
+				      <div class="dropdown card-options">
+				        <button class="btn-options" type="button" id="task-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				          <i class="material-icons">more_vert</i>
+				        </button>
+				        <div class="dropdown-menu dropdown-menu-right">
+				          <a class="dropdown-item" th:attr="data-wish-id=${wish.id}" href="javascript:void(0);">Edit</a>
+				          <a class="dropdown-item" th:attr="data-wish-id=${wish.id}" href="#">Manage events</a>
+				          <div class="dropdown-divider"></div>
+				          <a class="dropdown-item text-danger wish-action-delete" th:attr="data-wish-id=${wish.id},data-wish-description=${wish.description}" href="javascript:void(0);" data-toggle="modal" data-target="#delete-wish-modal">Delete</a>
+				        </div>
+				      </div>
+				    </div>
+				  </div>
+				</div><!--end of task-->	
 			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#new-wish-modal">Make a wish</button>
 		</div>
 	</div>
 	
@@ -99,7 +94,35 @@
 			</div>
 		</div>
 	</div>
+	
+	<!-- Delete wish modal -->
+	<div class="modal fade" id="delete-wish-modal" tabindex="-1" role="dialog" aria-labelledby="delete-wish-modal-label" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<form action="/wish/delete" method="post">
+					<div class="modal-header bg-danger">
+						<h5 class="modal-title" id="delete-wish-modal-label">Confirm delete</h5>
+						<button type="button" class="close btn btn-round" data-dismiss="modal" aria-label="Close">
+							<i class="material-icons">close</i>
+						</button>
+					</div>
+					<div class="modal-body">
+						<h3>Are you sure you want to delete this wish?</h3>
+						<blockquote class="blockquote">
+							<span id="delete-wish-description">Default content</span>
+						</blockquote>
+					</div>
+					<div class="modal-footer">
+						<input type="hidden" id="delete-wish-id" name="wishId" />
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-danger">Delete wish</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 
+	<script type="text/javascript" th:src="@{/js/custom/wishlist.js}"></script>
 </section>
 </body>
 </html>

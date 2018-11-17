@@ -9,13 +9,25 @@
 		<div class="row justify-content-center">
 			<div class="col-xl-10 col-lg-11">
 				<div class="page-header">
-					<h1>Dashboard</h1>
-					<p class="lead">Description of dashboard goes here.</p>
+					<h1 th:text="'Welcome, ' + ${user.firstName} + '!'">Dashboard</h1>
+					<p class="lead">What would you like to do?</p>
 				</div>
 				<hr>
-				<div class="content-list">
-					<p th:text="${userName}">Welcome to your dashboard!</p>
+				<div class="row text-center">
+					<div class="col-6">
+						<div class="jumbotron">
+							<h1 class="mb-4">Manage My&nbsp;Wishlist</h1>
+							<a class="btn btn-primary btn-lg" th:href="@{/wishlist}" role="button">Get stuff</a>
+						</div>
+					</div>
+					<div class="col-6">
+						<div class="jumbotron">
+							<h1 class="mb-4">View My&nbsp;Events</h1>
+							<a class="btn btn-primary btn-lg" th:href="@{/events}" role="button">Give stuff</a>
+						</div>
+					</div>
 				</div>
+				
 			</div>
 		</div>
 	</div>

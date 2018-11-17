@@ -23,15 +23,26 @@ public class Range {
 	private BigDecimal maximum = BigDecimal.ZERO;
 
 	public String getPrice() {
-		return getPrice("-");
+		return getPriceCurrency("-");
 	}
 	
-	public String getPrice(String delimiter) {
+	public String getPriceRange() {
+		return getPriceDigits("-");
+	}
+	
+	public String getPriceCurrency(String delimiter) {
 		if (minimum.equals(maximum)) {
 			return NumberFormat.getCurrencyInstance().format(minimum);
 		}
 		return NumberFormat.getCurrencyInstance().format(minimum) + delimiter
 				+ NumberFormat.getCurrencyInstance().format(maximum);
+	}
+	
+	public String getPriceDigits(String delimiter) {
+		if (minimum.equals(maximum)) {
+			return String.valueOf(minimum);
+		}
+		return String.valueOf(minimum) + delimiter + String.valueOf(maximum);
 	}
 
 }
