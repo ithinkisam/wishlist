@@ -1,6 +1,5 @@
 package com.ithinkisam.wishlist.controller;
 
-import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
@@ -15,7 +14,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +26,7 @@ import com.ithinkisam.wishlist.model.User;
 import com.ithinkisam.wishlist.model.Wish;
 import com.ithinkisam.wishlist.model.support.Range;
 import com.ithinkisam.wishlist.model.support.Reference;
-import com.ithinkisam.wishlist.parse.RangeParser;
+import com.ithinkisam.wishlist.repository.ReferenceRepository;
 import com.ithinkisam.wishlist.repository.UserRepository;
 import com.ithinkisam.wishlist.repository.WishRepository;
 
@@ -40,6 +38,9 @@ public class WishlistController {
 	
 	@Autowired
 	private WishRepository wishRepository;
+	
+	@Autowired
+	private ReferenceRepository referenceRepository;
 	
 	@Autowired
 	private Parser<Range> rangeParser;
@@ -90,16 +91,18 @@ public class WishlistController {
 	}
 	
 	@PostMapping("/wish/update")
-	public String editWish(Wish wish, Model model, @ModelAttribute("messages") List<Message> messages) {
+	public String editWish(Integer wishId, String description, String price, Model model, @ModelAttribute("messages") List<Message> messages) throws ParseException {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User user = userRepository.findByEmail(auth.getName());
 		
 		model.addAttribute("user", user);
 		
-		Optional<Wish> existing = wishRepository.findById(wish.getId());
+		Optional<Wish> existing = wishRepository.findById(wishId);
 		if (existing.isPresent()) {
 			if (existing.get().getUser().equals(user)) {
-				wishRepository.save(wish);
+				existing.get().setDescription(description);
+				existing.get().setPrice(rangeParser.parse(price, Locale.getDefault()));
+				wishRepository.save(existing.get());
 				return "redirect:/wishlist";
 			}
 			messages.add(new Message("danger", "Error", "wishlist.update.notAuthorized"));
@@ -127,6 +130,29 @@ public class WishlistController {
 		}
 		messages.add(new Message("danger", "Error", "wishlist.delete.notFound"));
 		return "secured/wishlist";
+	}
+	
+	@PostMapping("/wish/{id}/references")
+	@ResponseBody
+	public Reference addReference(@PathVariable(name = "id") Integer wishId, String url) throws MalformedURLException {
+		System.out.println("URL: " + url);
+		Optional<Wish> wish = wishRepository.findById(wishId);
+		if (wish.isPresent()) {
+			Reference newRef = new Reference();
+			newRef.setWish(wish.get());
+			newRef.setUrl(new URL(url));
+			wish.get().addReference(newRef);
+			Wish updatedWish = wishRepository.save(wish.get());
+			return updatedWish.getReferences().get(updatedWish.getReferences().size() - 1);
+		}
+		return null;
+	}
+	
+	@PostMapping("/references/{id}/delete")
+	@ResponseBody
+	public String removeReference(@PathVariable(name = "id") Integer referenceId) {
+		referenceRepository.deleteById(referenceId);
+		return "OK";
 	}
 	
 }

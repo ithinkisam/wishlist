@@ -1,6 +1,11 @@
 package com.ithinkisam.wishlist.controller;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +37,17 @@ public class EventController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User user = userRepository.findByEmail(auth.getName());
 		
-		model.addAttribute("memberEvents", eventRepository.findByMembersId(user.getId()));
-		model.addAttribute("adminEvents", eventRepository.findByAdminsId(user.getId()));
+		Set<Event> events = new TreeSet<>(new Comparator<Event>() {
+
+			@Override
+			public int compare(Event o1, Event o2) {
+				return o1.getDate().compareTo(o2.getDate());
+			}
+			
+		});
+		events.addAll(eventRepository.findByMembersId(user.getId()));
+		events.addAll(eventRepository.findByAdminsId(user.getId()));
+		model.addAttribute("events", events);
 		
 		return "secured/events";
 	}

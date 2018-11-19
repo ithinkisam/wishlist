@@ -1,41 +1,66 @@
 <!DOCTYPE html>
-<html th:replace="~{main :: main(~{::title}, ~{}, ~{::section}, ~{})}" xmlns:th="http://thymeleaf.com">
+<html th:replace="~{main :: main(~{::title}, ~{}, ~{::ol}, ~{::section}, ~{::script})}" xmlns:th="http://thymeleaf.com">
 <head>
 	<title>Events</title>
 </head>
 <body>
-<section>
-	<div class="page-header">
-		<h1>Events</h1>
-		<p class="lead">Description of events page goes here.</p>
-	</div>
-	<hr>
-	<div class="content-list-body row">
-		<div th:each="event : ${memberEvents}" class="col-lg-6">
-			<div class="card card-team">
-				<div class="progress">
-					<div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-				</div>
-				<div class="card-body">
-					<div class="dropdown card-options">
-						<button class="btn-options" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<i class="material-icons">more_vert</i>
-						</button>
-						<div class="dropdown-menu dropdown-menu-right">
-							<a class="dropdown-item">Details</a>
-							<div th:if="${adminEvents.contains(event)}">
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item">Manage</a>
+<ol>
+	<li class="breadcrumb-item"><a class="breadcrumb-link" th:href="@{/home}">Home</a></li>
+	<li class="breadcrumb-item"><a class="breadcrumb-link active" aria-current="page" th:href="@{/events}">Events</a></li>
+</ol>
+<section class="container space-1">
+	<div class="u-cubeportfolio">
+		<!-- Filter -->
+		<ul id="filterControls" class="list-inline cbp-l-filters-alignRight text-center">
+			<li class="list-inline-item cbp-filter-item cbp-filter-item-active u-cubeportfolio__item" data-filter="*">All</li>
+			<li class="list-inline-item cbp-filter-item u-cubeportfolio__item" data-filter=".member">Member</li>
+			<li class="list-inline-item cbp-filter-item u-cubeportfolio__item" data-filter=".admin">Admin</li>
+		</ul>
+		<!-- End Filter -->
+		
+		<!-- Content -->
+		<div class="cbp" data-layout="grid" data-controls="#filterControls" data-animation="quicksand"
+				data-x-gap="32" data-y-gap="32" data-media-queries='[
+	        {"width": 1500, "cols": 4},
+	        {"width": 1100, "cols": 4},
+	        {"width": 800, "cols": 3},
+	        {"width": 480, "cols": 2},
+	        {"width": 300, "cols": 1}
+	      ]'>
+			<!-- Item -->
+			<div th:each="event : ${events}" class="cbp-item rounded bg-white"
+					th:classappend="${event.admins.contains(user) && event.members.contains(user)} ? 'admin member'
+							: (${event.admins.contains(user)} ? 'admin' : (${event.members.contains(user)} ? 'member' : ''))">
+				<a class="cbp-caption" th:href="@{/events/{eventId}(eventId=${event.id})}">
+					<div class="cbp-caption-defaultWrap p-3" style="min-height: 12rem">
+						<h5 th:text="${event.title}">Event title</h5>
+						<p class="small text-muted" th:text="${event.description}">Description goes here</p>
+						<p class="small text-muted" th:text="${event.members.size()} + ' members'"># members</p>
+					</div>
+					<div class="cbp-caption-activeWrap bg-primary">
+						<div class="cbp-l-caption-alignCenter">
+							<div class="cbp-l-caption-body">
+								<h4 class="h6 text-white mb-0" th:text="${{event.date}}"></h4>
+								<p class="small text-white mb-0" th:text="${event.location}"></p>
 							</div>
 						</div>
 					</div>
-					<div class="card-title">
-						<a th:href="@{/events/{eventId}(eventId=${event.id})}"><h5 th:text="${event.title}">Event Title</h5></a>
-						<span>
-							<span th:text="${{event.date}}">mm/dd/yyyy</span><br>
-							<span th:text="${event.members.size()}"></span> Members
-						</span>
-					</div>
+				</a>
+			</div>
+			<!-- End Item -->
+		</div>
+	</div>
+	
+	<!-- 
+	<div class="content-list-body row">
+		<div th:each="event : ${memberEvents}" class="col-lg-4">
+			<div class="card">
+				<div class="card-body">
+					<h5 class="card-title" th:text="${event.title}"></h5>
+					<span>
+						<span th:text="${{event.date}}">mm/dd/yyyy</span><br>
+						<span th:text="${event.members.size()}"></span> Members
+					</span>
 					<ul class="avatars">
 						<li th:each="user : ${event.members}" class="avatar-container">
 							<img alt="Image" th:src="'/img/avatar-' + ${user.profileValue('color')} + '.jpg'" class="avatar" />
@@ -46,6 +71,9 @@
 			</div>
 		</div>
 	</div>
+	 -->
+	<script type="text/javascript" th:src="@{/js/custom/events.js}"></script>
 </section>
 </body>
 </html>
+						

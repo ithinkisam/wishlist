@@ -20,9 +20,33 @@ REPLACE INTO wish (wish_id, description, price_minimum, price_maximum, user_id, 
 REPLACE INTO wish (wish_id, description, price_minimum, price_maximum, user_id, purchased, purchaser_id) VALUES (4, 'Something special', 49.98, 49.98, 1, true, 3);
 
 REPLACE INTO wish_reference (reference_id, wish_id, url) VALUES (1, 1, 'https://www.amazon.com');
+REPLACE INTO wish_reference (reference_id, wish_id, url) VALUES (2, 1, 'https://www.google.com');
+REPLACE INTO wish_reference (reference_id, wish_id, url) VALUES (3, 2, 'https://www.getbootstrap.com');
 
-REPLACE INTO event (event_id, title, description, date) VALUES (1, 'Butler Christmas 2018', 'The coolest getogether ever', '2018-12-25 09:00:00');
+REPLACE INTO event (event_id, title, description, date, location) VALUES (1, 'Butler Christmas 2018', 'The coolest getogether ever', '2018-12-22 14:00:00', 'Gma & Gpa Butler''s House');
+REPLACE INTO event (event_id, title, description, date, location) VALUES (2, 'LaPlaca Christmas 2018', 'The lit-est getogether ever', '2018-12-25 10:00:00', 'Nona and Grampa''s House');
+REPLACE INTO event (event_id, title, description, date) VALUES (3, 'Ellis'' First Christmas!', 'An event of straight fire', '2018-12-25 07:30:00');
+REPLACE INTO event (event_id, title, description, date, location) VALUES (4, 'Lynette Christmas', 'Hangin'' with mom', '2018-12-24 16:00:00', 'Grandma''s house');
+REPLACE INTO event (event_id, title, description, date, location) VALUES (5, 'Duane Christmas', 'Hangin'' with pops', '2018-12-24 10:30:00', 'Papa''s house');
+REPLACE INTO event (event_id, title, description, date, location) VALUES (6, 'Humnick Christmas', 'This is gonna get weird...', '2018-12-25 14:23:00', 'The place');
 REPLACE INTO event_members (event_event_id, members_user_id) VALUES (1, 1);
+REPLACE INTO event_members (event_event_id, members_user_id) VALUES (2, 1);
+REPLACE INTO event_members (event_event_id, members_user_id) VALUES (3, 1);
+REPLACE INTO event_members (event_event_id, members_user_id) VALUES (4, 1);
+REPLACE INTO event_members (event_event_id, members_user_id) VALUES (5, 1);
 REPLACE INTO event_members (event_event_id, members_user_id) VALUES (1, 2);
+REPLACE INTO event_members (event_event_id, members_user_id) VALUES (2, 2);
+REPLACE INTO event_members (event_event_id, members_user_id) VALUES (3, 2);
+REPLACE INTO event_members (event_event_id, members_user_id) VALUES (4, 2);
+REPLACE INTO event_members (event_event_id, members_user_id) VALUES (5, 2);
 REPLACE INTO event_members (event_event_id, members_user_id) VALUES (1, 3);
+REPLACE INTO event_members (event_event_id, members_user_id) VALUES (2, 3);
+REPLACE INTO event_members (event_event_id, members_user_id) VALUES (3, 3);
+REPLACE INTO event_members (event_event_id, members_user_id) VALUES (4, 3);
+REPLACE INTO event_members (event_event_id, members_user_id) VALUES (5, 3);
 REPLACE INTO event_admins (event_event_id, admins_user_id) VALUES (1, 1);
+REPLACE INTO event_admins (event_event_id, admins_user_id) VALUES (2, 2);
+REPLACE INTO event_admins (event_event_id, admins_user_id) VALUES (3, 2);
+REPLACE INTO event_admins (event_event_id, admins_user_id) VALUES (4, 1);
+REPLACE INTO event_admins (event_event_id, admins_user_id) VALUES (5, 1);
+REPLACE INTO event_admins (event_event_id, admins_user_id) VALUES (6, 1);

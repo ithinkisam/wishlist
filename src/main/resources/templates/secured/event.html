@@ -1,24 +1,28 @@
 <!DOCTYPE html>
-<html th:replace="~{main :: main(~{::title}, ~{}, ~{::section}, ~{})}" xmlns:th="http://thymeleaf.com">
+<html th:replace="~{main :: main(~{::title}, ~{}, ~{::ol}, ~{::section}, ~{::script})}" xmlns:th="http://thymeleaf.com">
 <head>
 	<title th:text="${event.title}">Event</title>
 </head>
 <body>
-<section>
+<ol>
+	<li class="breadcrumb-item"><a class="breadcrumb-link" th:href="@{/home}">Home</a></li>
+	<li class="breadcrumb-item"><a class="breadcrumb-link" th:href="@{/events}">Events</a></li>
+	<li class="breadcrumb-item"><a class="breadcrumb-link active" aria-current="page" th:href="@{/event/{eventId}(eventId=${event.id})}" th:text="${event.title}"></a></li>
+</ol>
+<section class="container space-1">
+
 	<div class="page-header">
 		<h1 th:text="${event.title}">Event title</h1>
 		<p class="lead" th:text="${event.description}">description</p>
+		<p class="text-muted"><span th:text="${{event.date}}">date</span> - <small th:text="${event.location}"></small></p>
 	</div>
 	<hr>
+	
 	<div class="content-list-body row">
 		<div class="col-3">
 			<div class="nav nav-tabs flex-column" id="event-nav-tabs" role="tablist" aria-orientation="vertical">
 				<h4 class="mt-2 text-center">Members</h4>
 				<a th:each="member,iter : ${event.members}" th:if="${member.id != user.id}" class="nav-link mx-2 my-1" th:classappend="${iter.first || (iter.index == 1 && event.members[0].id == user.id)} ? 'active' : ''" data-toggle="pill" role="tab" th:href="@{#event-member-{memberId}(memberId=${member.id})}">
-					<span class="avatar-container">
-						<img alt="Image" th:src="'/img/avatar-' + ${member.profileValue('color')} + '.jpg'" class="avatar" />
-						<span class="avatar-alt" th:text="${member.firstName.charAt(0)} + ${member.lastName.charAt(0)}"></span>
-					</span>
 					<span th:text="${member.firstName}"></span>
 				</a>
 			</div>
@@ -32,17 +36,14 @@
 							<h6>Available items</h6>
 						</div>
 						<div class="card card-task" th:each="wish : ${member.wishes}" th:if="${!wish.purchased}">
-							<div class="progress">
-								<div class="progress-bar bg-success" role="progressbar" style="width: 100%"></div>
-							</div>
 							<div class="card-body">
 								<div class="card-title">
 									<h6 th:text="${wish.description}"></h6>
-									<span class="text-small" th:text="${wish.price.price}"></span>
+									<span class="text-small" th:text="${wish.price.currency}"></span>
 								</div>
 								<div class="dropdown card-options">
 									<button class="btn-options" type="button" id="task-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<i class="material-icons">more_vert</i>
+										<i class="fas fa-ellipsis-v"></i>
 									</button>
 									<div class="dropdown-menu dropdown-menu-right">
 										<a href="#" class="dropdown-item">I bought this</a>
@@ -59,13 +60,10 @@
 							<h6>Purchased items</h6>
 						</div>
 						<div class="card card-task" th:each="wish : ${member.wishes}" th:if="${wish.purchased}">
-							<div class="progress">
-								<div class="progress-bar" th:classappend="${wish.purchaser.id == user.id ? 'bg-info' : 'bg-danger'}" role="progressbar" style="width: 100%"></div>
-							</div>
 							<div class="card-body">
 								<div class="card-title">
 									<h6 th:text="${wish.description}"></h6>
-									<span class="text-small" th:text="${wish.price.price}"></span>
+									<span class="text-small" th:text="${wish.price.currency}"></span>
 								</div>
 								<div class="dropdown card-options" th:if="${wish.purchaser.id == user.id}">
 									<button class="btn-options" type="button" id="task-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -82,6 +80,8 @@
 			</div>
 		</div>
 	</div>
+	
+	<script type="text/javascript" th:src="@{/js/custom/event.js}"></script>
 </section>
 </body>
 </html>

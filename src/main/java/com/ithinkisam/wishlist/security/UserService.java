@@ -30,7 +30,7 @@ public class UserService {
 
 	public boolean registerUser(UserRegistration userRegistration) {
 		User newUser = new User();
-		newUser.setActive(false);
+		newUser.setActive(true);
 		newUser.setEmail(userRegistration.getEmail());
 		newUser.setFirstName(userRegistration.getFirstName());
 		newUser.setLastName(userRegistration.getLastName());

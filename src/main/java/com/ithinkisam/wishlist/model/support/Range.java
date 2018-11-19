@@ -22,11 +22,11 @@ public class Range {
 	@Column(name = "price_maximum")
 	private BigDecimal maximum = BigDecimal.ZERO;
 
-	public String getPrice() {
+	public String getCurrency() {
 		return getPriceCurrency("-");
 	}
 	
-	public String getPriceRange() {
+	public String getRange() {
 		return getPriceDigits("-");
 	}
 	

@@ -1,34 +1,37 @@
 <!DOCTYPE html>
-<html th:replace="~{main :: main(~{::title}, ~{}, ~{::section}, ~{})}" xmlns:th="http://www.thymeleaf.com">
+<html th:replace="~{main :: main(~{::title}, ~{}, ~{::ol}, ~{::section}, ~{})}" xmlns:th="http://www.thymeleaf.com">
 <head>
 	<title>Home</title>
 </head>
 <body>
-<section>
-	<div class="container">
-		<div class="row justify-content-center">
-			<div class="col-xl-10 col-lg-11">
-				<div class="page-header">
-					<h1 th:text="'Welcome, ' + ${user.firstName} + '!'">Dashboard</h1>
-					<p class="lead">What would you like to do?</p>
-				</div>
-				<hr>
-				<div class="row text-center">
-					<div class="col-6">
-						<div class="jumbotron">
-							<h1 class="mb-4">Manage My&nbsp;Wishlist</h1>
+<ol>
+	<li class="breadcrumb-item"><a class="breadcrumb-link active" aria-current="page" th:href="@{/home}">Home</a></li>
+</ol>
+<section class="container space-1">
+	<div class="row justify-content-center">
+		<div class="col-xl-10 col-lg-11">
+			<div class="page-header">
+				<h1 class="text-center">What would you like to do?</h1>
+			</div>
+			<div class="row text-center">
+				<div class="col-6">
+					<div class="card p-6">
+						<div class="card-body">
+							<h2 class="card-title">Managed My&nbsp;Wishlist</h2>
 							<a class="btn btn-primary btn-lg" th:href="@{/wishlist}" role="button">Get stuff</a>
 						</div>
 					</div>
-					<div class="col-6">
-						<div class="jumbotron">
-							<h1 class="mb-4">View My&nbsp;Events</h1>
+				</div>
+				<div class="col-6">
+					<div class="card p-6">
+						<div class="card-body">
+							<h2 class="card-title">View My&nbsp;Events</h2>
 							<a class="btn btn-primary btn-lg" th:href="@{/events}" role="button">Give stuff</a>
 						</div>
 					</div>
 				</div>
-				
 			</div>
+			
 		</div>
 	</div>
 </section>

@@ -5,33 +5,75 @@
 </head>
 <body>
 <section>
-	<h1 class="h2">Create account</h1>
-	<p class="lead">Make your list, check it twice...</p>
-	<button class="btn btn-lg btn-block btn-primary">
-		<img alt="Google" src="/img/logo-google.svg" class="rounded align-top mr-2" />Continue with Google
-	</button>
-	<hr>
-	<form action="registration" method="post">
-		<div class="form-group">
-			<input class="form-control" type="text" placeholder="First Name" name="firstName" required />
+	<form class="js-validate mt-5" novalidate="novalidate" method="post" action="registration">
+		<!-- Title -->
+		<div class="mb-7">
+			<h1 class="h3 text-primary font-weight-normal mb-0">Welcome to <span class="font-weight-semi-bold">Wishlist</span></h1>
+			<p>Fill out the form to get started.</p>
 		</div>
-		<div class="form-group">
-			<input class="form-control" type="text" placeholder="Last Name" name="lastName" required />
+		<!-- End Title -->
+		
+		<!-- Form Group -->
+		<div class="js-form-message form-group">
+			<label class="form-label" for="signinSrFirstName">First name</label>
+			<input type="text" class="form-control" name="firstName" id="signinSrFirstName" placeholder="Hingle" aria-label="First name" required="" data-msg="Please enter a first name." data-error-class="u-has-error" data-success-class="u-has-success">
 		</div>
-		<div class="form-group">
-			<input class="form-control" type="email" placeholder="Email Address" name="email" required />
+		<!-- End Form Group -->
+		
+		<!-- Form Group -->
+		<div class="js-form-message form-group">
+			<label class="form-label" for="signinSrLastName">Last name</label>
+			<input type="text" class="form-control" name="lastName" id="signinSrLastName" placeholder="McCringleberry" aria-label="Last name" required="" data-msg="Please enter a last name." data-error-class="u-has-error" data-success-class="u-has-success">
 		</div>
-		<div class="form-group">
-			<input class="form-control" type="password" placeholder="Password" name="password" required />
-			<div class="text-left">
-				<small>Your password should be at least 8 characters</small>
+		<!-- End Form Group -->
+		
+		<!-- Form Group -->
+		<div class="js-form-message form-group">
+			<label class="form-label" for="signinSrEmail">Email address</label>
+			<input type="email" class="form-control" name="email" id="signinSrEmail" placeholder="Email address" aria-label="Email address" required="" data-msg="Please enter a valid email address." data-error-class="u-has-error" data-success-class="u-has-success">
+		</div>
+		<!-- End Form Group -->
+		
+		<!-- Form Group -->
+		<div class="js-form-message form-group">
+			<label class="form-label" for="signinSrPassword">Password</label>
+			<input type="password" class="form-control" name="password" id="signinSrPassword" placeholder="********" aria-label="********" required="" data-msg="Your password is invalid. Please try again." data-error-class="u-has-error" data-success-class="u-has-success">
+		</div>
+		<!-- End Form Group -->
+		
+		<!-- Form Group -->
+		<div class="js-form-message form-group">
+			<label class="form-label" for="signinSrConfirmPassword">Confirm password</label>
+			<input type="password" class="form-control" name="matchingPassword" id="signinSrConfirmPassword" placeholder="********" aria-label="********" required="" data-msg="Password does not match the confirm password." data-error-class="u-has-error" data-success-class="u-has-success">
+		</div>
+		<!-- End Form Group -->
+		
+		<!-- Checkbox -->
+		<div class="js-form-message mb-5">
+			<div class="custom-control custom-checkbox d-flex align-items-center text-muted">
+				<input type="checkbox" class="custom-control-input" id="termsCheckbox" name="termsCheckbox" required="" data-msg="Please accept our Terms and Conditions." data-error-class="u-has-error" data-success-class="u-has-success">
+				<label class="custom-control-label" for="termsCheckbox">
+					<small>
+						I agree to the
+						<a class="link-muted" href="#">Terms and Conditions</a>
+					</small>
+				</label>
 			</div>
 		</div>
-		<div class="form-group">
-			<input class="form-control" type="password" placeholder="Confirm Password" name="matchingPassword" required />
+		<!-- End Checkbox -->
+		
+		<!-- Button -->
+		<div class="row align-items-center mb-5">
+			<div class="col-5 col-sm-6">
+				<span class="small text-muted">Already have an account?</span>
+				<a class="small" th:href="@{/login}">Login</a>
+			</div>
+			
+			<div class="col-7 col-sm-6 text-right">
+				<button type="submit" class="btn btn-primary transition-3d-hover">Get Started</button>
+			</div>
 		</div>
-		<button class="btn btn-lg btn-block btn-primary" role="button" type="submit">Create account</button>
-		<small>Already have an account? <a th:href="@{/login}">Login here</a></small>
+		<!-- End Button -->
 	</form>
 </section>
 </body>

@@ -30,6 +30,8 @@ public class Event {
 	
 	private LocalDateTime date;
 	
+	private String location;
+	
 	@ManyToMany(
 		fetch = FetchType.LAZY,
 		targetEntity = User.class

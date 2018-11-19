@@ -1,94 +1,109 @@
 <!DOCTYPE html>
-<html th:replace="~{main :: main(~{::title}, ~{}, ~{::section}, ~{::script})}" xmlns:th="http://thymeleaf.com">
+<html th:replace="~{main :: main(~{::title}, ~{}, ~{::ol}, ~{::section}, ~{::script})}" xmlns:th="http://thymeleaf.com">
 <head>
 	<title>Wishlist</title>
 </head>
 <body>
-<section>
-	<div class="page-header">
-		<h1>My Wishlist</h1>
-		<p class="lead">Description of wishlist goes here.</p>
-	</div>
-	<hr>
-	<div class="content-list">
-		<div class="content-list-body row">
-			<div th:each="wish : ${user.wishes}" class="col-lg-12">
-				<div class="card card-task">
-				  <div class="progress">
-				    <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-				  </div>
-				  <div class="card-body">
-				    <div class="card-title">
-				      <h6 th:text="${wish.description}">Wish description goes here</h6>
-				      <!-- <span class="text-small">Due Tomorrow</span> -->
-				    </div>
-				    <div class="card-meta">
-				      <ul class="avatars">
-			      	    <li th:each="reference : ${wish.references}"><a th:href="${reference.url}" target="_blank"><i class="fal fa-link fa-lg fa-fw"></i></a></li>
-				      </ul>
-				      <div class="d-flex align-items-center">
-				        <!-- <i class="material-icons">playlist_add_check</i> -->
-				        <span th:text="${wish.price != null ? wish.price.price : 'N/A'}"></span>
-				      </div>
-				      <div class="dropdown card-options">
-				        <button class="btn-options" type="button" id="task-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				          <i class="material-icons">more_vert</i>
-				        </button>
-				        <div class="dropdown-menu dropdown-menu-right">
-				          <a class="dropdown-item" th:attr="data-wish-id=${wish.id}" href="javascript:void(0);">Edit</a>
-				          <a class="dropdown-item" th:attr="data-wish-id=${wish.id}" href="#">Manage events</a>
-				          <div class="dropdown-divider"></div>
-				          <a class="dropdown-item text-danger wish-action-delete" th:attr="data-wish-id=${wish.id},data-wish-description=${wish.description}" href="javascript:void(0);" data-toggle="modal" data-target="#delete-wish-modal">Delete</a>
-				        </div>
-				      </div>
-				    </div>
-				  </div>
-				</div><!--end of task-->	
+<ol>
+	<li class="breadcrumb-item"><a class="breadcrumb-link" th:href="@{/home}">Home</a></li>
+	<li class="breadcrumb-item"><a class="breadcrumb-link active" aria-current="page" th:href="@{/wishlist}">Wishlist</a></li>
+</ol>
+<section class="container space-1">
+	
+	<div class="card">
+		<div class="card-body">
+			<div class="table-responsive-md u-datatable">
+				<table id="wish-table" class="table table-borderless u-datatable__striped u-datatable__content mb-5">
+					<thead>
+						<tr class="text-uppercase font-size-1">
+							<th scope="col" class="font-weight-medium">
+								<div class="d-flex justify-content-between align-items-center">
+									Description
+								</div>
+							</th>
+							<th scope="col" class="font-weight-medium">
+								<div class="d-flex justify-content-between align-items-center">
+									Price
+								</div>
+							</th>
+							<th scope="col" class="font-weight-medium">
+								<div class="d-flex justify-content-between align-items-center">
+									Show Links
+								</div>
+							</th>
+							<th scope="col" class="font-weight-medium">
+								<div class="d-flex justify-content-between align-items-center"></div>
+							</th>
+						</tr>
+					</thead>
+					<tbody class="font-size-1">
+						<tr th:each="wish : ${user.wishes}">
+							<td class="align-middle font-weight-normal" th:text="${wish.description}"></td>
+							<td class="align-middle" th:text="${wish.price != null ? wish.price.currency : 'N/A'}"></td>
+							<td class="align-middle">
+								<div class="media align-items-center">
+									<label class="checkbox-switch">
+										<input type="checkbox" class="checkbox-switch__input show-refs" th:attr="data-wish-id=${wish.id}">
+										<span class="checkbox-switch__slider"></span>
+									</label>
+								</div>
+							</td>
+							<td class="align-middle">
+								<div class="dropdown dropright">
+									<button class="btn btn-link" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="fas fa-ellipsis-v"></i>
+									</button>
+									<div class="dropdown-menu">
+										<a class="dropdown-item wish-action-edit" th:attr="data-wish-id=${wish.id}" href="javascript:void(0);" data-toggle="modal" data-target="#edit-wish-modal">Edit</a>
+										<div class="dropdown-divider"></div>
+										<a class="dropdown-item text-danger wish-action-delete" th:attr="data-wish-id=${wish.id},data-wish-description=${wish.description}" href="javascript:void(0);" data-toggle="modal" data-target="#delete-wish-modal">Delete</a>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
-	</div>
-	<div class="row">
-		<div class="col-12">
-			<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#new-wish-modal">Make a wish</button>
+		<div class="card-footer">
+			<button type="button" class="btn btn-primary transition-3d-hover float-right" data-toggle="modal" data-target="#new-wish-modal"><i class="fas fa-plus small mr-2"></i> Add a wish</button>
 		</div>
 	</div>
 	
-	<!-- New wish modal -->
-	<div class="modal fade" id="new-wish-modal" tabindex="-1" role="dialog" aria-labelledby="new-wish-modal-label" aria-hidden="true">
-		<div class="modal-dialog" role="document">
+	<!-- Edit wish modal -->
+	<div class="modal fade" id="edit-wish-modal" tabindex="-1" role="dialog" aria-labelledby="edit-wish-modal-label" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
-				<form action="wish" method="post">
+				<form action="/wish/update" method="post">
 					<div class="modal-header">
-						<h5 class="modal-title" id="new-wish-modal-label">Make a wish!</h5>
+						<h5 class="modal-title" id="edit-wish-modal-label">Update wish</h5>
 						<button type="button" class="close btn btn-round" data-dismiss="modal" aria-label="Close">
-							<i class="material-icons">close</i>
+							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
 						<div class="form-group">
-							<label for="new-wish-url">URL</label>
-							<input id="new-wish-url" class="form-control" type="text" placeholder="http://www.example.com/two-front-teeth" name="urls" />
+							<label for="edit-wish-description">Description</label>
+							<input id="edit-wish-description" class="form-control" type="text" placeholder="My two front teeth..." name="description" required />
+							<input id="edit-wish-description-orig" type="hidden">
 						</div>
 						<div class="form-group">
-							<label for="new-wish-description">Description</label>
-							<input id="new-wish-description" class="form-control" type="text" placeholder="My two front teeth..." name="description" required />
-						</div>
-						<div class="form-group">
-							<label for="new-wish-price">Price</label>
+							<label for="edit-wish-price">Price</label>
 							<div class="input-group input-group round">
 								<div class="input-group-prepend">
 									<span class="input-group-text">
 										<i class="fal fa-dollar-sign"></i>
 									</span>
 								</div>
-								<input id="new-wish-price" class="form-control" type="text" name="price" placeholder="14.99" />
+								<input id="edit-wish-price" class="form-control" type="text" name="price" placeholder="14.99" />
+								<input id="edit-wish-price-orig" type="hidden">
 							</div>
-							<small id="new-wish-price-help" class="form-text text-muted">This can be a single amount or a range (e.g. 15-20)</small>
+							<small id="edit-wish-price-help" class="form-text text-muted">This can be a single amount or a range (e.g. 15-20)</small>
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-						<button type="submit" class="btn btn-primary">Add to wishlist</button>
+						<input type="hidden" id="edit-wish-id" name="wishId" /><button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+						<button type="submit" id="edit-wish-button" class="btn btn-primary" disabled>Save changes</button>
 					</div>
 				</form>
 			</div>
@@ -100,21 +115,18 @@
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<form action="/wish/delete" method="post">
-					<div class="modal-header bg-danger">
+					<div class="modal-header">
 						<h5 class="modal-title" id="delete-wish-modal-label">Confirm delete</h5>
 						<button type="button" class="close btn btn-round" data-dismiss="modal" aria-label="Close">
-							<i class="material-icons">close</i>
+							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
-						<h3>Are you sure you want to delete this wish?</h3>
-						<blockquote class="blockquote">
-							<span id="delete-wish-description">Default content</span>
-						</blockquote>
+						<p class="lead">Are you sure you want to delete the wish &quot;<span id="delete-wish-description" class="font-weight-bold"></span>&quot;?</p>
 					</div>
 					<div class="modal-footer">
 						<input type="hidden" id="delete-wish-id" name="wishId" />
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 						<button type="submit" class="btn btn-danger">Delete wish</button>
 					</div>
 				</form>
