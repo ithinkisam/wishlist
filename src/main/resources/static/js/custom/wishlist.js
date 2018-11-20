@@ -1,5 +1,3 @@
-var test = {};
-
 function formatReferenceRow(ref, wishId, isEven) {
 	var row = $('<tr>', {
 		class: isEven ? 'even' : 'odd wl-odd-darken'

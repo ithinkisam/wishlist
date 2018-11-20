@@ -27,6 +27,23 @@
 	        {"width": 480, "cols": 2},
 	        {"width": 300, "cols": 1}
 	      ]'>
+	      	<!-- New Item -->
+	      	<div class="cbp-item rounded bg-primary">
+				<a class="cbp-caption" data-toggle="modal" data-target="#new-event-modal" href="javascript:;">
+					<div class="cbp-caption-defaultWrap p-3 text-center" style="min-height: 12rem">
+						<i class="fal fa-plus-circle fa-5x fa-inverse pt-6"></i>
+					</div>
+					<div class="cbp-caption-activeWrap bg-white">
+						<div class="cbp-l-caption-alignCenter">
+							<div class="cbp-l-caption-body">
+								<h4 class="h6 mb-0">Create event</h4>
+							</div>
+						</div>
+					</div>
+				</a>
+			</div>
+	      	<!-- End New Item -->
+	      
 			<!-- Item -->
 			<div th:each="event : ${events}" class="cbp-item rounded bg-white"
 					th:classappend="${event.admins.contains(user) && event.members.contains(user)} ? 'admin member'
@@ -51,27 +68,8 @@
 		</div>
 	</div>
 	
-	<!-- 
-	<div class="content-list-body row">
-		<div th:each="event : ${memberEvents}" class="col-lg-4">
-			<div class="card">
-				<div class="card-body">
-					<h5 class="card-title" th:text="${event.title}"></h5>
-					<span>
-						<span th:text="${{event.date}}">mm/dd/yyyy</span><br>
-						<span th:text="${event.members.size()}"></span> Members
-					</span>
-					<ul class="avatars">
-						<li th:each="user : ${event.members}" class="avatar-container">
-							<img alt="Image" th:src="'/img/avatar-' + ${user.profileValue('color')} + '.jpg'" class="avatar" />
-							<span class="avatar-alt" th:text="${user.firstName.charAt(0)} + ${user.lastName.charAt(0)}"></span>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
-	 -->
+	<div th:replace="secured/new-event-modal :: modal"></div>
+	
 	<script type="text/javascript" th:src="@{/js/custom/events.js}"></script>
 </section>
 </body>

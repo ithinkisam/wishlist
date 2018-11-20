@@ -12,69 +12,97 @@
 <section class="container space-1">
 
 	<div class="page-header">
-		<h1 th:text="${event.title}">Event title</h1>
-		<p class="lead" th:text="${event.description}">description</p>
-		<p class="text-muted"><span th:text="${{event.date}}">date</span> - <small th:text="${event.location}"></small></p>
+		<h1 class="display-4" th:attr="title=${event.description}" th:text="${event.title}">Event title</h1>
+		<h2><span th:text="${{event.date}}">date</span> - <small class="text-muted" th:text="${event.location}"></small></h2>
 	</div>
 	<hr>
 	
-	<div class="content-list-body row">
+	<div class="row">
 		<div class="col-3">
-			<div class="nav nav-tabs flex-column" id="event-nav-tabs" role="tablist" aria-orientation="vertical">
-				<h4 class="mt-2 text-center">Members</h4>
-				<a th:each="member,iter : ${event.members}" th:if="${member.id != user.id}" class="nav-link mx-2 my-1" th:classappend="${iter.first || (iter.index == 1 && event.members[0].id == user.id)} ? 'active' : ''" data-toggle="pill" role="tab" th:href="@{#event-member-{memberId}(memberId=${member.id})}">
-					<span th:text="${member.firstName}"></span>
-				</a>
-			</div>
+			<nav class="nav nav-pills flex-column bg-white p-3" role="tablist" aria-orientation="vertical">
+				<a th:each="member,iter : ${members}" class="nav-link mx-2 my-1"
+						data-toggle="tab" role="tab"
+						th:classappend="${iter.first} ? 'active' : ''"
+						th:href="@{#event-member-{memberId}(memberId=${member.id})}"
+						th:text="${member.firstName}"></a>
+			</nav>
 		</div>
+		
 		<div class="col-9">
-			<div class="tab-content" id="event-nav-tab-content">
-				<div class="tab-pane fade" th:each="member,iter : ${event.members}" th:if="${member.id != user.id}" th:classappend="${iter.first || (iter.index == 1 && event.members[0].id == user.id)} ? 'active show' : ''" role="tab" th:id="'event-member-' + ${member.id}">
-					<!-- Available wishes -->
-					<div class="card-list">
-						<div class="card-list-head">
-							<h6>Available items</h6>
+			<div class="tab-content">
+				<div class="tab-pane fade" th:each="member,iter : ${members}"
+						th:id="'event-member-' + ${member.id}"
+						th:classappend="${iter.first} ? 'show active' : ''">
+					<div class="row">
+						<div class="col-6">
+							<h3 th:text="${member.firstName}"></h3>
 						</div>
-						<div class="card card-task" th:each="wish : ${member.wishes}" th:if="${!wish.purchased}">
-							<div class="card-body">
-								<div class="card-title">
-									<h6 th:text="${wish.description}"></h6>
-									<span class="text-small" th:text="${wish.price.currency}"></span>
-								</div>
-								<div class="dropdown card-options">
-									<button class="btn-options" type="button" id="task-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<i class="fas fa-ellipsis-v"></i>
-									</button>
-									<div class="dropdown-menu dropdown-menu-right">
-										<a href="#" class="dropdown-item">I bought this</a>
-										<a href="#" class="dropdown-item">Suggest this item</a>
-									</div>
-								</div>
+						<div class="col-6">
+							<div class="media align-items-center">
+								<label class="checkbox-switch mr-3">
+									<input type="checkbox" class="checkbox-switch__input" id="toggle-purchased-wishes">
+									<span class="checkbox-switch__slider"></span>
+								</label>
 							</div>
 						</div>
 					</div>
 					
-					<!-- Purchased wishes -->
-					<div class="card-list">
-						<div class="card-list-head">
-							<h6>Purchased items</h6>
-						</div>
-						<div class="card card-task" th:each="wish : ${member.wishes}" th:if="${wish.purchased}">
-							<div class="card-body">
-								<div class="card-title">
-									<h6 th:text="${wish.description}"></h6>
-									<span class="text-small" th:text="${wish.price.currency}"></span>
-								</div>
-								<div class="dropdown card-options" th:if="${wish.purchaser.id == user.id}">
-									<button class="btn-options" type="button" id="task-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<i class="material-icons">more_vert</i>
-									</button>
-									<div class="dropdown-menu dropdown-menu-right">
-										<a href="#" class="dropdown-item">I returned this</a>
-									</div>
-								</div>
-							</div>
-						</div>
+					<div class="table-responsive-md u-datatable">
+						<table th:id="'wish-table-' + ${member.id}" class="wish-table table table-borderless table-hover u-datatable__striped u-datatable__content mb-5">
+							<thead>
+								<tr class="text-uppercase font-size-1">
+									<th scope="col" class="font-weight-medium">
+										<div class="d-flex justify-content-between align-items-center">
+											Description
+										</div>
+									</th>
+									<th scope="col" class="font-weight-medium">
+										<div class="d-flex justify-content-between align-items-center">
+											Price
+										</div>
+									</th>
+									<th scope="col" class="font-weight-medium">
+										<div class="d-flex justify-content-between align-items-center">
+											Available
+										</div>
+									</th>
+									<th scope="col" class="font-weight-medium">
+										<div class="d-flex justify-content-between align-items-center">
+											Links
+										</div>
+									</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<!-- Available wishes -->
+								<tr th:each="wish : ${member.wishes}" th:if="${!wish.purchased}">
+									<td th:text="${wish.description}"></td>
+									<td th:text="${wish.price.currency}"></td>
+									<td th:text="${wish.quantity}"></td>
+									<td>
+										<a th:each="reference : ${wish.references}" th:href="${reference.url}" target="_blank"><i class="fal fa-link"></i></a>
+									</td>
+									<td>
+										<button class="btn btn-xs btn-primary">Purchase</button>
+									</td>
+								</tr>
+								
+								<!-- Purchased wishes -->
+								<tr th:each="wish : ${member.wishes}" th:if="${wish.purchased}" class="purchased"
+										th:classappend="${wish.purchaser == user} ? 'table-success' : 'table-danger'">
+									<td th:text="${wish.description}"></td>
+									<td th:text="${wish.price.currency}"></td>
+									<td th:text="${wish.quantity}"></td>
+									<td>
+										<a th:each="reference : ${wish.references}" th:href="${reference.url}" target="_blank"><i class="fal fa-link"></i></a>
+									</td>
+									<td>
+										<button th:if="${wish.purchaser == user}" class="btn btn-xs btn-secondary">Return</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
 				</div>
 			</div>

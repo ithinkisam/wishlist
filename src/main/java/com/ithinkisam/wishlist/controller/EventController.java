@@ -2,7 +2,7 @@ package com.ithinkisam.wishlist.controller;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
@@ -56,19 +56,29 @@ public class EventController {
 	public String getEvent(@PathVariable("id") Integer eventId, Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User user = userRepository.findByEmail(auth.getName());
+		model.addAttribute("user", user);
 		
 		Optional<Event> event = eventRepository.findById(eventId);
 		if (!event.isPresent()) {
 			// do stuff
+			// not found!
 		}
 		
-		if (!event.get().getMembers().stream().map(User::getId).collect(Collectors.toList()).contains(user.getId())
-				&& !event.get().getAdmins().stream().map(User::getId).collect(Collectors.toList()).contains(user.getId())) {
-			model.addAttribute("event", event.get());
+		List<User> members = event.get().getMembers();
+		if (!members.contains(user)) {
+			// do stuff
+			// not allowed!
 		} else {
-			// no access to event
+			Collections.sort(members, new Comparator<User>() {
+				@Override
+				public int compare(User o1, User o2) {
+					return o1.getFirstName().compareTo(o2.getFirstName());
+				}
+			});
+			members.remove(user);
 		}
 		
+		model.addAttribute("members", members);
 		model.addAttribute("event", event.get());
 		
 		return "secured/event";

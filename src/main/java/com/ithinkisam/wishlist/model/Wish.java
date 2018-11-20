@@ -47,6 +47,8 @@ public class Wish {
 	)
 	private List<Reference> references = Collections.emptyList();
 	
+	private Integer quantity;
+	
 	private Boolean purchased;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
