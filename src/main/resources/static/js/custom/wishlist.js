@@ -3,12 +3,11 @@ function formatReferenceRow(ref, wishId, isEven) {
 		class: isEven ? 'even' : 'odd wl-odd-darken'
 	});
 	row.append($('<td>', {
-		class: 'text-muted pl-5',
-		html: '<a href="' + ref.url + '" target="_blank">' + ref.url + ' <i class="far fa-external-link"></i></a>'
+		'colspan': '3',
+		'class': 'text-muted pl-5',
+		'html': '<a href="' + ref.url + '" target="_blank">' + ref.url + ' <i class="far fa-external-link"></i></a>'
 	}));
 	row.append($('<td><button class="btn btn-xs btn-danger delete-ref" data-reference-id="' + ref.id + '">Remove</button></td>'));
-	row.append($('<td>'));
-	row.append($('<td>'));
 	return row;
 }
 
@@ -17,12 +16,11 @@ function formatNewReferenceRow(wishId, isEven) {
 		class: isEven ? 'even' : 'odd wl-odd-darken'
 	});
 	row.append($('<td>', {
-		class: 'pl-5',
-		html: '<input type="text" placeholder="URL" class="form-control form-control-sm wish-reference" style="height: calc(2rem + 2px)">'
+		'colspan': '3',
+		'class': 'pl-5',
+		'html': '<input type="text" placeholder="URL" class="form-control form-control-sm wish-reference" style="height: calc(2rem + 2px)">'
 	}));
 	row.append($('<td><button class="btn btn-xs btn-primary add-ref" data-wish-id="' + wishId + '">Add</button></td>'));
-	row.append($('<td>'));
-	row.append($('<td>'));
 	return row;
 }
 

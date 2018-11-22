@@ -20,27 +20,29 @@
 	<div class="row">
 		<div class="col-12 col-md-3">
 			<ul class="nav nav-pills flex-column bg-white p-3" role="tablist" aria-orientation="vertical">
-				<li class="nav-item mx-2 my-1 dropdown">
+				<li class="nav-item mx-2 my-1 dropdown" th:if="${event.admins.contains(user)}">
 					<a id="manage-event-link" class="manage-event-link nav-link dropdown-toggle" data-toggle="dropdown" href="#">
 						<i class="fas fa-cog fa-fw"></i> Manage
 					</a>
 					<div class="dropdown-menu">
 						<a class="event-nav-link manage-event-link dropdown-item" data-toggle="tab"
-								role="tab" th:if="${event.admins.contains(user)}" href="#event-manage-detail">
+								role="tab" href="#event-manage-detail">
 							Edit event details
 						</a>
+						<!-- 
 						<a class="event-nav-link manage-event-link dropdown-item" data-toggle="tab"
-								role="tab" th:if="${event.admins.contains(user)}" href="#event-manage-secret-santa">
+								role="tab" href="#event-manage-secret-santa">
 							Secret Santa
 						</a>
+						 -->
 						<div class="dropdown-divider"></div>
 						<a class="event-nav-link manage-event-link dropdown-item" data-toggle="tab"
 								th:classappend="${members.isEmpty() ? 'active' : ''}"
-								role="tab" th:if="${event.admins.contains(user)}" href="#event-manage-members">
+								role="tab" href="#event-manage-members">
 							Manage members
 						</a>
 						<a class="event-nav-link manage-event-link dropdown-item text-danger" data-toggle="tab"
-								role="tab" th:if="${event.admins.contains(user)}" href="#event-manage-admins">
+								role="tab" href="#event-manage-admins">
 							Manage admins
 						</a>
 					</div>
