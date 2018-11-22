@@ -54,6 +54,10 @@
 						th:href="@{#event-member-{memberId}(memberId=${member.id})}"
 						th:text="${member.firstName}"></a>
 				</li>
+				<li th:each="member : ${members}" th:if="${member == user}"
+						class="nav-item mx-2 my-1">
+					<a class="nav-link" th:text="${member.firstName}"></a> 
+				</li>
 			</ul>
 		</div>
 		

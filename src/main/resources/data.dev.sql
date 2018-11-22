@@ -31,6 +31,8 @@ REPLACE INTO wish (wish_id, description, price_minimum, price_maximum, user_id, 
 REPLACE INTO wish (wish_id, description, price_minimum, price_maximum, user_id, quantity, purchased, purchaser_id) VALUES (3, 'A google of my very own', 99.99, 99.99, 1, 1, true, 2);
 REPLACE INTO wish (wish_id, description, price_minimum, price_maximum, user_id, quantity, purchased, purchaser_id) VALUES (4, 'Something special', 49.98, 49.98, 1, 1, true, 3);
 
+REPLACE INTO wish (wish_id, description, price_minimum, price_maximum, user_id, quantity, purchased) VALUES (5, 'Suzie Talks-alot', 29.99, 29.99, 2, 1, false);
+
 REPLACE INTO wish_reference (reference_id, wish_id, url) VALUES (1, 1, 'https://www.amazon.com');
 REPLACE INTO wish_reference (reference_id, wish_id, url) VALUES (2, 1, 'https://www.google.com');
 REPLACE INTO wish_reference (reference_id, wish_id, url) VALUES (3, 2, 'https://www.getbootstrap.com');

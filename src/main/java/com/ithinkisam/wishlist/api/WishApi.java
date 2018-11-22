@@ -31,7 +31,7 @@ import com.ithinkisam.wishlist.repository.UserRepository;
 import com.ithinkisam.wishlist.repository.WishRepository;
 
 @RestController
-@RequestMapping("/wishes")
+@RequestMapping("/api/wishes")
 public class WishApi {
 
 	@Autowired
