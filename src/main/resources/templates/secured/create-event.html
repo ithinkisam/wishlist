@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html th:replace="~{main :: main(~{::title}, ~{}, ~{::ol}, ~{::section}, ~{::script})}" xmlns:th="http://thymeleaf.com">
+<head>
+	<title>Create Event</title>
+</head>
+<body>
+<ol>
+	<li class="breadcrumb-item"><a class="breadcrumb-link" th:href="@{/home}">Home</a></li>
+	<li class="breadcrumb-item"><a class="breadcrumb-link" th:href="@{/events}">Events</a></li>
+	<li class="breadcrumb-item"><a class="breadcrumb-link active" aria-current="page" th:href="@{/events/new}">New Event</a></li>
+</ol>
+<section class="container space-1">
+
+	<div class="page-header">
+		<h1 class="display-4">New Event</h1>
+	</div>
+	
+	<div class="row">
+		<div class="col-12">
+			<form action="/events" method="post">
+				<div class="form-group">
+					<label for="new-event-title">Title</label>
+					<input id="new-event-title" class="form-control" type="text" placeholder="Christmas with Scrooge" name="title" required />
+				</div>
+				<div class="form-group">
+					<label for="new-event-description">Description</label>
+					<input id="new-event-description" class="form-control" type="text" placeholder="Because who doesn't want to hang with that guy?" name="description" required />
+				</div>
+				<div class="form-group">
+					<label for="new-event-date">Date &amp; Time</label>
+					<input id="new-event-date" class="form-control" type="text" name="date" placeholder="Three strokes before midnight" required />
+				</div>
+				<div class="form-group">
+					<label for="new-event-location">Location</label>
+					<input id="new-event-location" class="form-control" type="text" placeholder="That one place..." name="location" required />
+				</div>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-primary">Schedule event</button>
+			</form>
+		</div>
+	</div>
+
+</section>
+
+<script type="text/javascript" th:src="@{/js/custom/create-event.js}"></script>
+
+</body>
+</html>

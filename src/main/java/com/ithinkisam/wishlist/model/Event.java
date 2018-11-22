@@ -1,6 +1,7 @@
 package com.ithinkisam.wishlist.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -36,12 +37,16 @@ public class Event {
 		fetch = FetchType.LAZY,
 		targetEntity = User.class
 	)
-	private List<User> members;
+	private List<User> members = new ArrayList<>();
 	
 	@ManyToMany(
 		fetch = FetchType.LAZY,
 		targetEntity = User.class
 	)
-	private List<User> admins;
+	private List<User> admins = new ArrayList<>();
+	
+//	@OneToMany(orphanRemoval = true)
+//	@JoinColumn(name = "event_id")
+//	private List<EventRule> rules = new ArrayList<>();
 	
 }

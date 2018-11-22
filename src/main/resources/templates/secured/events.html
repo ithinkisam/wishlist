@@ -29,7 +29,7 @@
 	      ]'>
 	      	<!-- New Item -->
 	      	<div class="cbp-item rounded bg-primary">
-				<a class="cbp-caption" data-toggle="modal" data-target="#new-event-modal" href="javascript:;">
+				<a class="cbp-caption" th:href="@{/events/new}">
 					<div class="cbp-caption-defaultWrap p-3 text-center" style="min-height: 12rem">
 						<i class="fal fa-plus-circle fa-5x fa-inverse pt-6"></i>
 					</div>
@@ -67,8 +67,6 @@
 			<!-- End Item -->
 		</div>
 	</div>
-	
-	<div th:replace="secured/new-event-modal :: modal"></div>
 	
 	<script type="text/javascript" th:src="@{/js/custom/events.js}"></script>
 </section>

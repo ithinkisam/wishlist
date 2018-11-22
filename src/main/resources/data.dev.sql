@@ -18,11 +18,13 @@ REPLACE INTO user (user_id, active, email, first_name, last_name, password) VALU
 REPLACE INTO user (user_id, active, email, first_name, last_name, password) VALUES (5, 1, 'rachel.humnick@gmail.com', 'Rachel', 'Humnick', '$2a$10$Ahl5DP1VseUvPywlpWa5delXOQf8YOSndTQem1kHFp.jdGwbeOq9C');
 REPLACE INTO user (user_id, active, email, first_name, last_name, password) VALUES (6, 1, 'humnick.jake@gmail.com', 'Jake', 'Humnick', '$2a$10$Ahl5DP1VseUvPywlpWa5delXOQf8YOSndTQem1kHFp.jdGwbeOq9C');
 REPLACE INTO user (user_id, active, email, first_name, last_name, password) VALUES (7, 1, 'annaraebutler@gmail.com', 'Anna', 'Butler', '$2a$10$Ahl5DP1VseUvPywlpWa5delXOQf8YOSndTQem1kHFp.jdGwbeOq9C');
+REPLACE INTO user (user_id, active, email, first_name, last_name, password) VALUES (8, 1, 'saziato@gmail.com', 'Malena', 'Hastings', '$2a$10$Ahl5DP1VseUvPywlpWa5delXOQf8YOSndTQem1kHFp.jdGwbeOq9C');
 
 REPLACE INTO user_role (user_id, role_id) VALUES (4, 2);
 REPLACE INTO user_role (user_id, role_id) VALUES (5, 2);
 REPLACE INTO user_role (user_id, role_id) VALUES (6, 2);
 REPLACE INTO user_role (user_id, role_id) VALUES (7, 2);
+REPLACE INTO user_role (user_id, role_id) VALUES (8, 2);
 
 REPLACE INTO wish (wish_id, description, price_minimum, price_maximum, user_id, quantity, purchased) VALUES (1, 'Test wish with a much longer name', 18, 25, 1, 1, false);
 REPLACE INTO wish (wish_id, description, price_minimum, price_maximum, user_id, quantity, purchased) VALUES (2, 'Suzie Talks-alot', 29.99, 29.99, 1, 1, false);

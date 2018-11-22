@@ -7,48 +7,91 @@
 <ol>
 	<li class="breadcrumb-item"><a class="breadcrumb-link" th:href="@{/home}">Home</a></li>
 	<li class="breadcrumb-item"><a class="breadcrumb-link" th:href="@{/events}">Events</a></li>
-	<li class="breadcrumb-item"><a class="breadcrumb-link active" aria-current="page" th:href="@{/event/{eventId}(eventId=${event.id})}" th:text="${event.title}"></a></li>
+	<li class="breadcrumb-item"><a class="breadcrumb-link active" aria-current="page" th:href="@{/events/{eventId}(eventId=${event.id})}" th:text="${event.title}"></a></li>
 </ol>
 <section class="container space-1">
 
 	<div class="page-header">
 		<h1 class="display-4" th:attr="title=${event.description}" th:text="${event.title}">Event title</h1>
-		<h2><span th:text="${{event.date}}">date</span> - <small class="text-muted" th:text="${event.location}"></small></h2>
+		<h2><span th:text="${#temporals.format(event.date, 'MMMM d, yyyy h:mma')}"></span> - <small class="text-muted" th:text="${event.location}"></small></h2>
 	</div>
 	<hr>
 	
 	<div class="row">
-		<div class="col-3">
-			<nav class="nav nav-pills flex-column bg-white p-3" role="tablist" aria-orientation="vertical">
-				<a th:each="member,iter : ${members}" class="nav-link mx-2 my-1"
-						data-toggle="tab" role="tab"
-						th:classappend="${iter.first} ? 'active' : ''"
+		<div class="col-12 col-md-3">
+			<ul class="nav nav-pills flex-column bg-white p-3" role="tablist" aria-orientation="vertical">
+				<li class="nav-item mx-2 my-1 dropdown">
+					<a id="manage-event-link" class="manage-event-link nav-link dropdown-toggle" data-toggle="dropdown" href="#">
+						<i class="fas fa-cog fa-fw"></i> Manage
+					</a>
+					<div class="dropdown-menu">
+						<a class="event-nav-link manage-event-link dropdown-item" data-toggle="tab"
+								role="tab" th:if="${event.admins.contains(user)}" href="#event-manage-detail">
+							Edit event details
+						</a>
+						<a class="event-nav-link manage-event-link dropdown-item" data-toggle="tab"
+								role="tab" th:if="${event.admins.contains(user)}" href="#event-manage-secret-santa">
+							Secret Santa
+						</a>
+						<div class="dropdown-divider"></div>
+						<a class="event-nav-link manage-event-link dropdown-item" data-toggle="tab"
+								th:classappend="${members.isEmpty() ? 'active' : ''}"
+								role="tab" th:if="${event.admins.contains(user)}" href="#event-manage-members">
+							Manage members
+						</a>
+						<a class="event-nav-link manage-event-link dropdown-item text-danger" data-toggle="tab"
+								role="tab" th:if="${event.admins.contains(user)}" href="#event-manage-admins">
+							Manage admins
+						</a>
+					</div>
+				</li>
+				<li th:each="member,iter : ${members}" th:if="${member != user}"
+						class="event-nav-link nav-item mx-2 my-1">
+					<a class="nav-link" data-toggle="tab" role="tab"
+						th:classappend="${iter.first || (iter.index == 1 && members[0] == user)} ? 'active' : ''"
 						th:href="@{#event-member-{memberId}(memberId=${member.id})}"
 						th:text="${member.firstName}"></a>
-			</nav>
+				</li>
+			</ul>
 		</div>
 		
-		<div class="col-9">
-			<div class="tab-content">
+		<div class="col-12 col-md-9">
+			<div id="hide-purchases" class="tag-content bg-white p-3 float-right">
+				<div class="media text-right">
+					<label class="media-body text-muted mb-0 pr-2 d-none d-md-block" for="checkboxSwitch8">
+						<span class="d-block text-dark">Hide purchased items</span>
+					</label>
+					<label class="checkbox-switch mr-3">
+						<input type="checkbox" class="checkbox-switch__input" id="toggle-purchased-wishes" checked>
+						<span class="checkbox-switch__slider" id="toggle-purchased-wishes-span"></span>
+					</label>
+				</div>
+			</div>
+			<div class="tab-content bg-white p-3">
+				<div class="tab-pane fade" id="event-manage-detail">
+					<!-- Event details management section -->
+					<div th:insert="secured/event-management :: edit-event"></div>
+				</div>
+				<div class="tab-pane fade" id="event-manage-secret-santa">
+					<!-- Event secret santa management section -->
+					<div th:insert="secured/event-management :: manage-secret-santa"></div>
+				</div>
+				<div class="tab-pane fade" id="event-manage-members" th:classappend="${members.isEmpty() ? 'show active' : ''}">
+					<!-- Event member management section -->
+					<div th:insert="secured/event-management :: manage-members"></div>
+				</div>
+				<div class="tab-pane fade" id="event-manage-admins">
+					<!-- Event admin management section -->
+					<div th:insert="secured/event-management :: manage-admins"></div>
+				</div>
 				<div class="tab-pane fade" th:each="member,iter : ${members}"
 						th:id="'event-member-' + ${member.id}"
-						th:classappend="${iter.first} ? 'show active' : ''">
-					<div class="row">
-						<div class="col-6">
-							<h3 th:text="${member.firstName}"></h3>
-						</div>
-						<div class="col-6">
-							<div class="media align-items-center">
-								<label class="checkbox-switch mr-3">
-									<input type="checkbox" class="checkbox-switch__input" id="toggle-purchased-wishes">
-									<span class="checkbox-switch__slider"></span>
-								</label>
-							</div>
-						</div>
-					</div>
+						th:if="${member != user}"
+						th:classappend="${iter.first || (iter.index == 1 && members[0] == user)} ? 'show active' : ''">
+					<h2 class="pl-2"><strong th:text="${member.firstName}"></strong></h2>
 					
 					<div class="table-responsive-md u-datatable">
-						<table th:id="'wish-table-' + ${member.id}" class="wish-table table table-borderless table-hover u-datatable__striped u-datatable__content mb-5">
+						<table th:id="'wish-table-' + ${member.id}" class="wish-table table table-borderless table-stripe u-datatable__striped u-datatable__content mb-5">
 							<thead>
 								<tr class="text-uppercase font-size-1">
 									<th scope="col" class="font-weight-medium">
@@ -61,11 +104,13 @@
 											Price
 										</div>
 									</th>
+									<!-- 
 									<th scope="col" class="font-weight-medium">
 										<div class="d-flex justify-content-between align-items-center">
-											Available
+											Quantity
 										</div>
 									</th>
+									 -->
 									<th scope="col" class="font-weight-medium">
 										<div class="d-flex justify-content-between align-items-center">
 											Links
@@ -79,12 +124,12 @@
 								<tr th:each="wish : ${member.wishes}" th:if="${!wish.purchased}">
 									<td th:text="${wish.description}"></td>
 									<td th:text="${wish.price.currency}"></td>
-									<td th:text="${wish.quantity}"></td>
+									<!-- <td th:text="${wish.quantity}"></td> -->
 									<td>
 										<a th:each="reference : ${wish.references}" th:href="${reference.url}" target="_blank"><i class="fal fa-link"></i></a>
 									</td>
 									<td>
-										<button class="btn btn-xs btn-primary">Purchase</button>
+										<button class="btn btn-xs btn-primary purchase-btn">Purchase</button>
 									</td>
 								</tr>
 								
@@ -93,12 +138,12 @@
 										th:classappend="${wish.purchaser == user} ? 'table-success' : 'table-danger'">
 									<td th:text="${wish.description}"></td>
 									<td th:text="${wish.price.currency}"></td>
-									<td th:text="${wish.quantity}"></td>
+									<!-- <td th:text="${wish.quantity}"></td> -->
 									<td>
 										<a th:each="reference : ${wish.references}" th:href="${reference.url}" target="_blank"><i class="fal fa-link"></i></a>
 									</td>
 									<td>
-										<button th:if="${wish.purchaser == user}" class="btn btn-xs btn-secondary">Return</button>
+										<button th:if="${wish.purchaser == user}" class="btn btn-xs btn-secondary return-btn">&nbsp;&nbsp;Return&nbsp;&nbsp;&nbsp;</button>
 									</td>
 								</tr>
 							</tbody>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.com">
+<head>
+	<title>Event Management</title>
+</head>
+<body>
+	<div th:fragment="edit-event">
+		<h1>Edit event details</h1>
+		<form th:attr="action=@{/events/{eventId}/update(eventId=${event.id})}" method="post">
+			<div class="form-group">
+				<label for="new-event-title">Title</label>
+				<input id="new-event-title" class="form-control" type="text" th:value="${event.title}" th:attr="placeholder=${event.title}" name="title" required />
+			</div>
+			<div class="form-group">
+				<label for="new-event-description">Description</label>
+				<input id="new-event-description" class="form-control" type="text" th:value="${event.description}" th:attr="placeholder=${event.description}" name="description" required />
+			</div>
+			<div class="form-group">
+				<label for="edit-event-date">Date &amp; Time</label>
+				<input id="edit-event-date" class="form-control" type="text" name="date" th:value="${#temporals.formatISO(event.date)}" required />
+			</div>
+			<div class="form-group">
+				<label for="new-event-location">Location</label>
+				<input id="new-event-location" class="form-control" type="text" th:value="${event.location}" th:attr="placeholder=${event.location}" name="location" required />
+			</div>
+			<input type="hidden" name="id" th:value="${event.id}">
+			<button type="submit" class="btn btn-primary">Save changes</button>
+			<button type="button" class="btn btn-danger" disabled>Cancel this event</button>
+		</form>
+	</div>
+	
+	<div th:fragment="manage-secret-santa">
+		<h1>Secret Santa</h1>
+	</div>
+	
+	<div th:fragment="manage-members">
+		<h1>Manage members</h1>
+		
+		<div id="manage-member-message-container"></div>
+		
+		<div class="table-responsive-md u-datatable">
+			<table id="event-member-table" class="table table-stripe u-datatable__striped u-datatable__content">
+				<thead>
+					<tr class="text-uppercase font-size-1">
+						<th scope="col" class="font-weight-medium">
+							<div class="d-flex justify-content-between align-items-center">
+								Name
+							</div>
+						</th>
+						<th scope="col" class="font-weight-medium">
+							<div class="d-flex justify-content-between align-items-center">
+								Email
+							</div>
+						</th>
+						<th scope="col" class="font-weight-medium">
+							<div class="d-flex justify-content-between align-items-center">
+								Admin?
+							</div>
+						</th>
+						<th scope="col" class="font-weight-medium">
+							<div class="d-flex justify-content-between align-items-center">
+								Actions
+							</div>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="member : ${event.members}">
+						<td th:text="${member.firstName} + ' ' + ${member.lastName}"></td>
+						<td th:text="${member.email}"></td>
+						<td th:text="${event.admins.contains(member) ? 'Yes' : 'No'}"></td>
+						<td>
+							<button th:attr="data-user-id=${member.id},data-event-id=${event.id}"
+									class="btn-remove-member btn btn-xs btn-danger">Remove</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="table u-datatable">
+				<tbody>
+					<tr>
+						<td colspan="4">
+							<form id="add-event-member-form" th:attr="data-event-id=${event.id}">
+								<div class="form-group">
+									<div class="input-group">
+										<input type="email" id="event-member-email" name="email" class="form-control form-control-sm" placeholder="Email"></input>
+										<div class="input-group-append">
+											<button class="btn btn-sm btn-primary" type="submit">Add Member</button>
+										</div>
+									</div>
+								</div>
+							</form>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+	</div>
+	
+	<div th:fragment="manage-admins">
+		<h1>Manage admins</h1>
+		
+		<div id="manage-admin-message-container"></div>
+		
+		<div class="table-responsive-md u-datatable">
+			<table id="event-admin-table" class="table table-stripe u-datatable__striped u-datatable__content">
+				<thead>
+					<tr class="text-uppercase font-size-1">
+						<th scope="col" class="font-weight-medium">
+							<div class="d-flex justify-content-between align-items-center">
+								Name
+							</div>
+						</th>
+						<th scope="col" class="font-weight-medium">
+							<div class="d-flex justify-content-between align-items-center">
+								Email
+							</div>
+						</th>
+						<th scope="col" class="font-weight-medium">
+							<div class="d-flex justify-content-between align-items-center">
+								Member?
+							</div>
+						</th>
+						<th scope="col" class="font-weight-medium">
+							<div class="d-flex justify-content-between align-items-center">
+								Actions
+							</div>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="admin : ${event.admins}">
+						<td th:text="${admin.firstName} + ' ' + ${admin.lastName}"></td>
+						<td th:text="${admin.email}"></td>
+						<td th:text="${event.members.contains(admin) ? 'Yes' : 'No'}"></td>
+						<td>
+							<button th:attr="data-user-id=${admin.id},data-event-id=${event.id}"
+									class="btn-remove-admin btn btn-xs btn-danger">Remove</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="table u-datatable">
+				<tbody>
+					<tr>
+						<td colspan="4">
+							<form id="add-event-admin-form" th:attr="data-event-id=${event.id}">
+								<div class="form-group">
+									<div class="input-group">
+										<input type="email" id="event-admin-email" name="email" class="form-control form-control-sm" placeholder="Email"></input>
+										<div class="input-group-append">
+											<button class="btn btn-sm btn-primary" type="submit">Add Admin</button>
+										</div>
+									</div>
+								</div>
+							</form>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+</body>
+</html>

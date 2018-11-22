@@ -1,8 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-	<body>
-		<div th:fragment="footer">
-			<h3>Footer</h3>
+<head>
+	<title>Footer</title>
+</head>
+<body>
+	<footer th:fragment="nav">
+		<div class="bg-light border-top">
+			<div class="container text-center space-1">
+				<a class="d-inline-flex align-items-center mb-2" th:href="@{/}" aria-label="Wishlist">
+					<i class="fal fa-gift fa-2x"></i>
+				</a>
+				
+				<p class="small text-muted text-uppercase">ithinkisam.com</p>
+			</div>
 		</div>
-	</body>
+	</footer>
+</body>
 </html>
