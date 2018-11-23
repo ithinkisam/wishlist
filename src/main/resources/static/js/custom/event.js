@@ -30,11 +30,17 @@ $(function() {
 	checkHideToggle();
 	
 	$('.purchase-btn').click(function() {
-		// TODO
+		var wishId = $(this).data('wish-id');
+		$.post('/api/wishes/' + wishId + '/purchase', function(wish) {
+			console.log(wish);
+		});
 	});
 	
 	$('.return-btn').click(function() {
-		// TODO
+		var wishId = $(this).data('wish-id');
+		$.post('/api/wishes/' + wishId + '/unpurchase', function(wish) {
+			console.log(wish);
+		});
 	});
 	
 	$('#edit-event-date').flatpickr({

@@ -69,6 +69,7 @@ public class WishlistController {
 		Wish wish = new Wish();
 		wish.setDescription(description);
 		wish.setPrice(rangeParser.parse(price, Locale.getDefault()));
+		wish.setPurchased(false);
 		wish.setUser(user);
 		
 		if (urls != null && urls.length > 0) {

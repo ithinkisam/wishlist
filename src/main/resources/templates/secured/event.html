@@ -129,13 +129,14 @@
 								<!-- Available wishes -->
 								<tr th:each="wish : ${member.wishes}" th:if="${!wish.purchased}">
 									<td th:text="${wish.description}"></td>
-									<td th:text="${wish.price.currency}"></td>
+									<td th:text="${wish.price != null ? wish.price.currency : 'N/A'}"></td>
 									<!-- <td th:text="${wish.quantity}"></td> -->
 									<td>
+										<span th:if="${wish.references.isEmpty()}">N/A</span>
 										<a th:each="reference : ${wish.references}" th:href="${reference.url}" target="_blank"><i class="fal fa-link"></i></a>
 									</td>
 									<td>
-										<button class="btn btn-xs btn-primary purchase-btn">Purchase</button>
+										<button class="btn btn-xs btn-primary purchase-btn" th:attr="data-wish-id=${wish.id}">Purchase</button>
 									</td>
 								</tr>
 								
@@ -143,13 +144,14 @@
 								<tr th:each="wish : ${member.wishes}" th:if="${wish.purchased}" class="purchased"
 										th:classappend="${wish.purchaser == user} ? 'table-success' : 'table-danger'">
 									<td th:text="${wish.description}"></td>
-									<td th:text="${wish.price.currency}"></td>
+									<td th:text="${wish.price != null ? wish.price.currency : 'N/A'}"></td>
 									<!-- <td th:text="${wish.quantity}"></td> -->
 									<td>
+										<span th:if="${wish.references.isEmpty()}">N/A</span>
 										<a th:each="reference : ${wish.references}" th:href="${reference.url}" target="_blank"><i class="fal fa-link"></i></a>
 									</td>
 									<td>
-										<button th:if="${wish.purchaser == user}" class="btn btn-xs btn-secondary return-btn">&nbsp;&nbsp;Return&nbsp;&nbsp;&nbsp;</button>
+										<button th:if="${wish.purchaser == user}" class="btn btn-xs btn-secondary return-btn" th:attr="data-wish-id=${wish.id}">&nbsp;&nbsp;Return&nbsp;&nbsp;&nbsp;</button>
 									</td>
 								</tr>
 							</tbody>

@@ -16,35 +16,39 @@
 		<!-- Form Group -->
 		<div class="js-form-message form-group">
 			<label class="form-label" for="signinSrFirstName">First name</label>
-			<input type="text" class="form-control" name="firstName" id="signinSrFirstName" placeholder="Hingle" aria-label="First name" required="" data-msg="Please enter a first name." data-error-class="u-has-error" data-success-class="u-has-success">
+			<input type="text" class="form-control" name="firstName" id="signinSrFirstName" placeholder="Hingle" aria-label="First name" required data-msg="Please enter a first name." data-error-class="u-has-error" data-success-class="u-has-success">
+			<span class="small text-danger" th:if="${#fields.hasErrors('userRegistration.firstName')}" th:errors="*{userRegistration.firstName}">First name error</span>
 		</div>
 		<!-- End Form Group -->
 		
 		<!-- Form Group -->
 		<div class="js-form-message form-group">
 			<label class="form-label" for="signinSrLastName">Last name</label>
-			<input type="text" class="form-control" name="lastName" id="signinSrLastName" placeholder="McCringleberry" aria-label="Last name" required="" data-msg="Please enter a last name." data-error-class="u-has-error" data-success-class="u-has-success">
+			<input type="text" class="form-control" name="lastName" id="signinSrLastName" placeholder="McCringleberry" aria-label="Last name" required data-msg="Please enter a last name." data-error-class="u-has-error" data-success-class="u-has-success">
+			<span class="small text-danger" th:if="${#fields.hasErrors('userRegistration.lastName')}" th:errors="*{userRegistration.lastName}">Last name error</span>
 		</div>
 		<!-- End Form Group -->
 		
 		<!-- Form Group -->
 		<div class="js-form-message form-group">
 			<label class="form-label" for="signinSrEmail">Email address</label>
-			<input type="email" class="form-control" name="email" id="signinSrEmail" placeholder="Email address" aria-label="Email address" required="" data-msg="Please enter a valid email address." data-error-class="u-has-error" data-success-class="u-has-success">
+			<input type="email" class="form-control" name="email" id="signinSrEmail" placeholder="Email address" aria-label="Email address" required data-msg="Please enter a valid email address." data-error-class="u-has-error" data-success-class="u-has-success">
+			<span class="small text-danger" th:if="${#fields.hasErrors('userRegistration.email')}" th:errors="*{userRegistration.email}">Email error</span>
 		</div>
 		<!-- End Form Group -->
 		
 		<!-- Form Group -->
 		<div class="js-form-message form-group">
 			<label class="form-label" for="signinSrPassword">Password</label>
-			<input type="password" class="form-control" name="password" id="signinSrPassword" placeholder="********" aria-label="********" required="" data-msg="Your password is invalid. Please try again." data-error-class="u-has-error" data-success-class="u-has-success">
+			<input type="password" class="form-control" name="password" id="signinSrPassword" placeholder="********" aria-label="********" required data-msg="Your password is invalid. Please try again." data-error-class="u-has-error" data-success-class="u-has-success">
+			<span class="small text-danger" th:if="${#fields.hasErrors('userRegistration.password')}" th:errors="*{userRegistration.password}">Password error</span>
 		</div>
 		<!-- End Form Group -->
 		
 		<!-- Form Group -->
 		<div class="js-form-message form-group">
 			<label class="form-label" for="signinSrConfirmPassword">Confirm password</label>
-			<input type="password" class="form-control" name="matchingPassword" id="signinSrConfirmPassword" placeholder="********" aria-label="********" required="" data-msg="Password does not match the confirm password." data-error-class="u-has-error" data-success-class="u-has-success">
+			<input type="password" class="form-control" name="matchingPassword" id="signinSrConfirmPassword" placeholder="********" aria-label="********" required data-msg="Password does not match the confirm password." data-error-class="u-has-error" data-success-class="u-has-success">
 		</div>
 		<!-- End Form Group -->
 		

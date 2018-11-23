@@ -122,5 +122,53 @@ public class WishApi {
 		}
 		throw new PayloadException(ErrorCode.WISH.notFound(), wishId, HttpStatus.NOT_FOUND);
 	}
+	
+	@PostMapping("/{id}/purchase")
+	public Wish purchase(@PathVariable("id") Integer id) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User user = userRepository.findByEmail(auth.getName());
+		
+		// Wish must exist
+		Wish wish = wishRepository.findById(id).orElseThrow(() ->
+				new PayloadException(ErrorCode.WISH.notFound(), id, HttpStatus.NOT_FOUND));
+		
+		// Can't purchase your own wish
+		if (wish.getUser().equals(user)) {
+			throw new PayloadException(ErrorCode.WISH.notAuthorized(), id, HttpStatus.BAD_REQUEST);
+		}
+		
+		// Can't purchase if it's already been purchased
+		if (wish.getPurchased()) {
+			throw new PayloadException(ErrorCode.WISH.invalid(), id, HttpStatus.BAD_REQUEST);
+		}
+		
+		wish.setPurchased(true);
+		wish.setPurchaser(user);
+		return wishRepository.save(wish);
+	}
+
+	@PostMapping("/{id}/unpurchase")
+	public Wish unpurchase(@PathVariable("id") Integer id) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User user = userRepository.findByEmail(auth.getName());
+		
+		// Wish must exist
+		Wish wish = wishRepository.findById(id).orElseThrow(() ->
+				new PayloadException(ErrorCode.WISH.notFound(), id, HttpStatus.NOT_FOUND));
+		
+		// Can't unpurchase your own wish
+		if (wish.getUser().equals(user)) {
+			throw new PayloadException(ErrorCode.WISH.notAuthorized(), id, HttpStatus.BAD_REQUEST);
+		}
+		
+		// Can't unpurchase if it hasn't already been purchased
+		if (!wish.getPurchased()) {
+			throw new PayloadException(ErrorCode.WISH.invalid(), id, HttpStatus.BAD_REQUEST);
+		}
+		
+		wish.setPurchased(false);
+		wish.setPurchaser(null);
+		return wishRepository.save(wish);
+	}
 
 }
