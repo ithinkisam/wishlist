@@ -68,7 +68,7 @@
 						<span class="d-block text-dark">Hide purchased items</span>
 					</label>
 					<label class="checkbox-switch mr-3">
-						<input type="checkbox" class="checkbox-switch__input" id="toggle-purchased-wishes" checked>
+						<input type="checkbox" class="checkbox-switch__input" id="toggle-purchased-wishes">
 						<span class="checkbox-switch__slider" id="toggle-purchased-wishes-span"></span>
 					</label>
 				</div>
@@ -137,6 +137,7 @@
 									</td>
 									<td>
 										<button class="btn btn-xs btn-primary purchase-btn" th:attr="data-wish-id=${wish.id}">Purchase</button>
+										<button style="display:none;" class="btn btn-xs btn-secondary return-btn" th:attr="data-wish-id=${wish.id}">&nbsp;&nbsp;Return&nbsp;&nbsp;&nbsp;</button>
 									</td>
 								</tr>
 								
@@ -151,6 +152,7 @@
 										<a th:each="reference : ${wish.references}" th:href="${reference.url}" target="_blank"><i class="fal fa-link"></i></a>
 									</td>
 									<td>
+										<button style="display:none;" class="btn btn-xs btn-primary purchase-btn" th:attr="data-wish-id=${wish.id}">Purchase</button>
 										<button th:if="${wish.purchaser == user}" class="btn btn-xs btn-secondary return-btn" th:attr="data-wish-id=${wish.id}">&nbsp;&nbsp;Return&nbsp;&nbsp;&nbsp;</button>
 									</td>
 								</tr>

@@ -31,15 +31,33 @@ $(function() {
 	
 	$('.purchase-btn').click(function() {
 		var wishId = $(this).data('wish-id');
+		var tr = $(this).parents('tr');
+		var tableId = $(this).parents('table').attr('id');
 		$.post('/api/wishes/' + wishId + '/purchase', function(wish) {
-			console.log(wish);
+			var clone = tr.clone(true);
+			clone.hide();
+			tr.hide('normal').remove();
+			clone.addClass('purchased table-success');
+			clone.find('.return-btn').show();
+			clone.find('.purchase-btn').hide();
+			$('#' + tableId).find('tbody').append(clone);
+			clone.show('normal');
 		});
 	});
 	
 	$('.return-btn').click(function() {
 		var wishId = $(this).data('wish-id');
+		var tr = $(this).parents('tr');
+		var tableId = $(this).parents('table').attr('id');
 		$.post('/api/wishes/' + wishId + '/unpurchase', function(wish) {
-			console.log(wish);
+			var clone = tr.clone(true);
+			clone.hide();
+			tr.hide('normal').remove();
+			clone.removeClass('purchased table-success');
+			clone.find('.purchase-btn').show();
+			clone.find('.return-btn').hide();
+			$('#' + tableId).find('tbody').prepend(clone);
+			clone.show('normal');
 		});
 	});
 	

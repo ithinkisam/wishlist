@@ -85,7 +85,7 @@ public class WishApi {
 		
 		return wishRepository.save(wish);
 	}
-	
+
 	@PutMapping("/{id}")
 	public Wish update(@PathVariable(name = "id") Integer wishId, String description, String price) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();

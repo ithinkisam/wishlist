@@ -78,9 +78,9 @@ public class WishlistController {
 				Reference reference = new Reference();
 				try {
 					reference.setUrl(new URL(url));
+					reference.setWish(wish);
 					wish.getReferences().add(reference);
 				} catch (MalformedURLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
