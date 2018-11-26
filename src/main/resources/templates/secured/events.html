@@ -30,7 +30,7 @@
 	      	<!-- New Item -->
 	      	<div class="cbp-item rounded bg-primary">
 				<a class="cbp-caption" th:href="@{/events/new}">
-					<div class="cbp-caption-defaultWrap p-3 text-center" style="min-height: 12rem">
+					<div class="cbp-caption-defaultWrap p-3 text-center" style="min-height: 13rem">
 						<i class="fal fa-plus-circle fa-5x fa-inverse pt-6"></i>
 					</div>
 					<div class="cbp-caption-activeWrap bg-white">
@@ -49,7 +49,7 @@
 					th:classappend="${event.admins.contains(user) && event.members.contains(user)} ? 'admin member'
 							: (${event.admins.contains(user)} ? 'admin' : (${event.members.contains(user)} ? 'member' : ''))">
 				<a class="cbp-caption" th:href="@{/events/{eventId}(eventId=${event.id})}">
-					<div class="cbp-caption-defaultWrap p-3" style="min-height: 12rem">
+					<div class="cbp-caption-defaultWrap p-3" style="min-height: 13rem">
 						<h5 th:text="${event.title}">Event title</h5>
 						<p class="small text-muted" th:text="${event.description}">Description goes here</p>
 						<p class="small text-muted" th:text="${event.members.size()} + ' members'"># members</p>
