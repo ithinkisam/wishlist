@@ -189,4 +189,25 @@ $(function() {
 		});
 	});
 	
+	$('#add-secret-santa-rule-btn').click(function(e) {
+		e.preventDefault();
+		var newRule = $('#secret-santa-rule-template').clone();
+		newRule.removeAttr('id');
+		newRule.insertBefore($('#add-secret-santa-rule-btn'));
+		newRule.show('normal');
+		return false;
+	});
+	
+	$('a[href="#event-manage-secret-santa"]').on('shown.bs.tab', function() {
+		$('#secret-santa-draws-table').DataTable({
+			paging: false,
+			searching: false,
+			ordering: true,
+			order: [[1, "asc"]],
+			columnDefs: [
+				{ "orderable": false, "targets": 0 }
+			]
+		});
+	});
+	
 });

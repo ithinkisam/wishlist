@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.com">
+<head>
+	<title>New Managed User</title>
+</head>
+<body>
+<section th:fragment="form">
+	<h2 class="pl-2"><strong>New managed user</strong></h2>
+	<form th:action="@{/managed-users}" method="post" class="clearfix">
+		
+		<!-- Form Group -->
+		<div class="js-form-message form-group">
+			<label class="form-label" for="signinSrFirstName">First name</label>
+			<input type="text" class="form-control" name="firstName" id="newManagedUserFirstName" placeholder="Hingle" aria-label="First name" required data-msg="Please enter a first name." data-error-class="u-has-error" data-success-class="u-has-success">
+			<span class="small text-danger" th:if="${#fields.hasErrors('newManagedUser.firstName')}" th:errors="#{newManagedUser.firstName}">First name error</span>
+		</div>
+		<!-- End Form Group -->
+		
+		<!-- Form Group -->
+		<div class="js-form-message form-group">
+			<label class="form-label" for="signinSrLastName">Last name</label>
+			<input type="text" class="form-control" name="lastName" id="newManagedUserLastName" placeholder="McCringleberry" aria-label="Last name" required data-msg="Please enter a last name." data-error-class="u-has-error" data-success-class="u-has-success">
+			<span class="small text-danger" th:if="${#fields.hasErrors('newManagedUser.lastName')}" th:errors="#{newManagedUser.lastName}">Last name error</span>
+		</div>
+		<!-- End Form Group -->
+		
+		<button type="submit" class="btn btn-primary float-right">Create managed user</button>
+	</form>
+</section>
+</body>
+</html>

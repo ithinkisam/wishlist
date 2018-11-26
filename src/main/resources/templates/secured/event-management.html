@@ -31,6 +31,92 @@
 	
 	<div th:fragment="manage-secret-santa">
 		<h1>Secret Santa</h1>
+		
+		<div id="managed-secret-santa-message-container"></div>
+		
+		<div th:if="${event.assignments.isEmpty()}">
+			<p>Secret Santa has not yet been set up. If you want to set up a gift
+				exchange, fill out the form below.</p>
+			<p><strong>Be sure to include rules for both sides of the draw. For example,
+				Bill cannot draw Sally <em>and</em> Sally cannot draw Bill.</strong></p>
+			<form id="secret-santa-form" th:action="@{/events/{eventId}/secret-santa(eventId=${event.id})}" method="post">
+				<div class="input-group mb-3">
+					<select class="custom-select" name="ss-assignee">
+						<option value="">(Choose one)</option>
+						<option th:each="member : ${event.members}" th:if="${members != user}"
+								th:value="${member.id}" th:text="${member.firstName}"></option>
+					</select>
+					<span class="input-group-text custom-text pl-3 pr-3">cannot draw</span>
+					<select class="custom-select" name="ss-recipient">
+						<option value="">(Choose one)</option>
+						<option th:each="member : ${event.members}" th:if="${members != user}"
+								th:value="${member.id}" th:text="${member.firstName}"></option>
+					</select>
+				</div>
+				<button type="button" id="add-secret-santa-rule-btn" class="btn btn-primary">Add another rule</button>
+				
+				<div id="secret-santa-rule-template" class="input-group mb-3" style="display: none;">
+					<select class="custom-select" name="ss-assignee">
+						<option value="">(Choose one)</option>
+						<option th:each="member : ${event.members}" th:if="${members != user}"
+								th:value="${member.id}" th:text="${member.firstName}"></option>
+					</select>
+					<span class="input-group-text custom-text pl-3 pr-3">cannot draw</span>
+					<select class="custom-select" name="ss-recipient">
+						<option value="">(Choose one)</option>
+						<option th:each="member : ${event.members}" th:if="${members != user}"
+								th:value="${member.id}" th:text="${member.firstName}"></option>
+					</select>
+				</div>
+				
+				<p class="pt-5 small">
+					Make sure everyone has been added as a <strong>member</strong> of this event
+					before drafting gift assignments for Secret Santa. If you need to add a member
+					after setting up Secret Santa, confirm with each member that they have not
+					already purchased a gift.
+				</p>
+				<button type="submit" class="btn btn-danger btn-block">Set it up!</button>
+			</form>
+			
+		</div>
+		<div th:if="${!event.assignments.isEmpty()}">
+			<p class="lead">
+				Secret Santa has already been drawn. The table below is provided to assure you
+				that everyone will be getting a gift, but it doesn't tell you from whom!
+			</p>
+			<div class="table-responsive-md u-datatable">
+				<table id="secret-santa-draws-table" class="table table-borderless table-stripe u-datatable__striped u-datatable__content mb-5">
+					<thead>
+						<tr class="text-uppercase font-size-1">
+							<td scope="col" class="font-weight-medium">Assignee</td>
+							<td scope="col" class="font-weight-medium">
+								<div class="d-flex justify-content-between align-items-center">
+									Recipient
+									<div class="ml-2">
+										<span class="fas fa-angle-up u-datatable__thead-icon"></span>
+										<span class="fas fa-angle-down u-datatable__thead-icon"></span>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="assignment : ${event.assignments}">
+							<td>**********</td>
+							<td th:text="${assignment.recipient.firstName}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<p class="small pt-5">
+				<strong>Warning:</strong> Before removing assignments, please check with all
+				members of this event to ensure no members have already purchased gifts for
+				those they are assigned.
+			</p>
+			<form th:action="@{/events/{eventId}/secret-santa/reset(eventId=${event.id})}" method="post">
+				<button type="submit" class="btn btn-danger btn-block">Remove assignments</button>
+			</form>
+		</div>
 	</div>
 	
 	<div th:fragment="manage-members">

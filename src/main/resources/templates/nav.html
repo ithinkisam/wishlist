@@ -72,8 +72,18 @@
 										<li class="nav-item u-header__nav-item">
 											<a class="nav-link u-header__nav-link" th:href="@{/events}">Events</a>
 										</li>
-										<li class="nav-item u-header__nav-item">
-											<a class="nav-link u-header__nav-link" th:href="@{/logout}">Logout</a>
+										<li class="nav-item hs-has-sub-menu u-header__nav-item" data-event="hover" data-animation-in="slideInUp" data-animation-out="fadeOut">
+											<a id="profileMegaMenu" class="nav-link u-header__nav-link u-header__nav-link-toggle" href="javascript:;" aria-haspopup="true" aria-expanded="false" aria-labelledby="profileSubMenu">
+												<i class="fal fa-cog"></i>
+											</a>
+											
+											<!-- Profile sub menu -->
+											<ul id="profileSubMenu" class="hs-sub-menu u-header__sub-menu" aria-labelledby="profileMegaMenu" style="min-width: 230px;">
+												<li><a class="nav-link u-header__sub-menu-nav-link" th:href="@{/account}">My Account</a></li>
+												<li><a class="nav-link u-header__sub-menu-nav-link" th:href="@{/managed-users}">Managed Users</a></li>
+												<li><a class="nav-link u-header__sub-menu-nav-link" th:href="@{/logout}">Logout</a></li>
+											</ul>
+											
 										</li>
 										<!-- 
 										<li class="nav-item u-header__nav-item">

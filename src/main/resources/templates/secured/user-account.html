@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html th:replace="~{main ::main(~{::title}, ~{}, ~{::ol}, ~{::section}, ~{})}" xmlns:th="http://thymeleaf.com">
+<head>
+	<title>Profile</title>
+</head>
+<body>
+<ol>
+	<li class="breadcrumb-item"><a class="breadcrumb-link" th:href="@{/home}">Home</a></li>
+	<li class="breadcrumb-item"><a class="breadcrumb-link active" aria-current="page" th:href="@{/account}">My Account</a></li>
+</ol>
+<section class="container space-1">
+	<div class="page-header">
+		<h1>Profile</h1>
+		<p class="lead">Description of profile goes here.</p>
+	</div>
+</section>
+</body>
+</html>

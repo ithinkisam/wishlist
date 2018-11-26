@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html th:replace="~{main :: main(~{::title}, ~{}, ~{::ol}, ~{::section}, ~{::script})}" xmlns:th="http://www.thymeleaf.com">
+<head>
+	<title>Managed Users</title>
+</head>
+<body>
+<ol>
+	<li class="breadcrumb-item"><a class="breadcrumb-link" th:href="@{/home}">Home</a></li>
+	<li class="breadcrumb-item"><a class="breadcrumb-link active" aria-current="page" th:href="@{/managed-users}">Managed Users</a></li>
+</ol>
+<section class="container space-1">
+
+	<div class="page-header">
+		<h1 class="display-4">Managed users</h1>
+	</div>
+	<hr>
+	
+	<div class="row">
+		<div class="col-12 col-md-3">
+			<ul class="nav nav-pills flex-column bg-white p-3" role="tablist" aria-orientation="vertical">
+				<li class="nav-item mx-2 my-1">
+					<a class="nav-link" data-toggle="tab" role="tab"
+							th:classappend="${user.managedUsers.isEmpty() ? 'show active' : ''}"
+							th:href="@{#new-managed-user}">
+						<i class="fas fa-user-plus"></i> Create user
+					</a>
+				</li>
+				<li th:each="managedUser,iter : ${user.managedUsers}" class="nav-item mx-2 my-1">
+					<a class="nav-link" data-toggle="tab" role="tab"
+						th:classappend="${!user.managedUsers.isEmpty() && iter.first} ? 'show active' : ''"
+						th:href="@{#managed-user-{userId}(userId=${managedUser.id})}"
+						th:text="${managedUser.firstName}"></a>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="col-12 col-md-9">
+			<div class="tab-content bg-white p-3">
+				<div class="tab-pane fade" id="new-managed-user"
+						th:classappend="${user.managedUsers.isEmpty()} ? 'show active' : ''"
+						th:include="secured/new-managed-user :: form">
+				</div>
+				<div class="tab-pane fade" th:each="managedUser,iter : ${user.managedUsers}"
+						th:id="'managed-user-' + ${managedUser.id}"
+						th:classappend="${!user.managedUsers.isEmpty() && iter.first} ? 'show active' : ''">
+					<h2 class="pl-2 pb-2 border-bottom"><strong th:text="${managedUser.firstName}"></strong></h2>
+					
+					<div class="clearfix">
+						<h4>Wishes</h4>
+						<div class="table-responsive-md u-datatable">
+							<table th:id="'managed-user-table-' + ${managedUser.id}" class="managed-user-table table table-borderless table-stripe u-datatable__striped u-datatable__content">
+								<thead>
+									<tr class="text-uppercase font-size-1">
+										<th scope="col" class="font-weight-medium">
+											<div class="d-flex justify-content-between align-items-center">
+												Description
+											</div>
+										</th>
+										<th scope="col" class="font-weight-medium">
+											<div class="d-flex justify-content-between align-items-center">
+												Price
+											</div>
+										</th>
+										<th scope="col" class="font-weight-medium">
+											<div class="d-flex justify-content-between align-items-center">
+												Show Links
+											</div>
+										</th>
+										<th scope="col" class="font-weight-medium">
+											<div class="d-flex justify-content-between align-items-center"></div>
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									<!-- Wishes -->
+									<tr th:each="wish : ${managedUser.wishes}">
+										<td class="align-middle" th:text="${wish.description}"></td>
+										<td class="align-middle" th:text="${wish.price != null ? wish.price.currency : 'N/A'}"></td>
+										<td class="align-middle">
+											<div class="media align-items-center">
+												<label class="checkbox-switch">
+													<input type="checkbox" class="checkbox-switch__input show-refs" th:attr="data-wish-id=${wish.id}">
+													<span class="checkbox-switch__slider"></span>
+												</label>
+											</div>
+										</td>
+										<td class="align-middle">
+											<div class="dropdown dropright">
+												<button class="btn btn-link" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+													<i class="fas fa-ellipsis-v"></i>
+												</button>
+												<div class="dropdown-menu">
+													<a class="dropdown-item wish-action-edit" th:attr="data-wish-id=${wish.id}" href="javascript:void(0);" data-toggle="modal" data-target="#edit-wish-modal">Edit</a>
+													<div class="dropdown-divider"></div>
+													<a class="dropdown-item text-danger wish-action-delete" th:attr="data-wish-id=${wish.id},data-wish-description=${wish.description}" href="javascript:void(0);" data-toggle="modal" data-target="#delete-wish-modal">Delete</a>
+												</div>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<button type="button" class="btn btn-primary transition-3d-hover float-right" data-toggle="modal" data-target="#new-managed-wish-modal"><i class="fas fa-plus small mr-2"></i> Add a wish</button>
+					</div>
+					
+					<!-- Events -->
+					<h4>Events</h4>
+					<p>Stuff goes here.</p>
+					
+					<!-- Edit form -->
+					<h4>User details</h4>
+					<div class=""></div>
+					<form th:action="@{/managed-users/update}" method="post">
+						<input type="hidden" name="id" th:value="${managedUser.id}">
+						<div class="form-group">
+							<label>First name</label>
+							<input type="text" class="form-control" name="firstName" th:value="${managedUser.firstName}" required>
+						</div>
+						<div class="form-group">
+							<label>Last name</label>
+							<input type="text" class="form-control" name="lastName" th:value="${managedUser.lastName}" required>
+						</div>
+						<button type="submit" class="btn btn-primary">Update</button>
+						<button type="button" class="btn btn-danger">Delete</button>
+					</form>
+					<!-- End Edit form -->
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Edit wish modal -->
+	<div class="modal fade" id="edit-wish-modal" tabindex="-1" role="dialog" aria-labelledby="edit-wish-modal-label" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<form action="/wish/update" method="post">
+					<div class="modal-header">
+						<h5 class="modal-title" id="edit-wish-modal-label">Update wish</h5>
+						<button type="button" class="close btn btn-round" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="edit-wish-description">Description</label>
+							<input id="edit-wish-description" class="form-control" type="text" placeholder="My two front teeth..." name="description" required />
+							<input id="edit-wish-description-orig" type="hidden">
+						</div>
+						<div class="form-group">
+							<label for="edit-wish-price">Price</label>
+							<div class="input-group input-group round">
+								<div class="input-group-prepend">
+									<span class="input-group-text">
+										<i class="fal fa-dollar-sign"></i>
+									</span>
+								</div>
+								<input id="edit-wish-price" class="form-control" type="text" name="price" placeholder="14.99" />
+								<input id="edit-wish-price-orig" type="hidden">
+							</div>
+							<small id="edit-wish-price-help" class="form-text text-muted">This can be a single amount or a range (e.g. 15-20)</small>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<input type="hidden" id="edit-wish-id" name="wishId" /><button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+						<button type="submit" id="edit-wish-button" class="btn btn-primary" disabled>Save changes</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Delete wish modal -->
+	<div class="modal fade" id="delete-wish-modal" tabindex="-1" role="dialog" aria-labelledby="delete-wish-modal-label" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<form action="/wish/delete" method="post">
+					<div class="modal-header">
+						<h5 class="modal-title" id="delete-wish-modal-label">Confirm delete</h5>
+						<button type="button" class="close btn btn-round" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<p class="lead">Are you sure you want to delete the wish &quot;<span id="delete-wish-description" class="font-weight-bold"></span>&quot;?</p>
+					</div>
+					<div class="modal-footer">
+						<input type="hidden" id="delete-wish-id" name="wishId" />
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+						<button type="submit" class="btn btn-danger">Delete wish</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+</section>
+
+<script type="text/javascript" th:src="@{/js/custom/managed-users.js}"></script>
+</body>
+</html>

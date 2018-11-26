@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.WebDataBinder;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import com.ithinkisam.wishlist.ApplicationData;
 import com.ithinkisam.wishlist.controller.support.Message;
 import com.ithinkisam.wishlist.model.User;
 import com.ithinkisam.wishlist.repository.UserRepository;
@@ -33,6 +35,13 @@ public class AdviceController {
 	@ModelAttribute("messages")
 	public List<Message> getMessages() {
 		return new ArrayList<>();
+	}
+	
+	@ModelAttribute("applicationData")
+	public ApplicationData getApplicationData(
+			@Value("${application.name}") String name,
+			@Value("${application.version}") String version) {
+		return new ApplicationData(name, version);
 	}
 	
 	@InitBinder

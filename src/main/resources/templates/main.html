@@ -50,7 +50,6 @@
 		<script type="text/javascript" th:src="@{/vendor/jquery-validation/dist/jquery.validate.min.js}"></script>
 		<script type="text/javascript" th:src="@{/vendor/datatables/media/js/jquery.dataTables.min.js}"></script>
 		<script type="text/javascript" th:src="@{/vendor/cubeportfolio/js/jquery.cubeportfolio.min.js}"></script>
-		<script type="text/javascript" th:src="@{/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js}"></script>
 		
 		<script type="text/javascript" th:src="@{/js/hs.core.js}"></script>
 		<script type="text/javascript" th:src="@{/js/components/hs.header.js}"></script>
@@ -59,13 +58,11 @@
 		<script type="text/javascript" th:src="@{/js/components/hs.datatables.js}"></script>
 		<script type="text/javascript" th:src="@{/js/components/hs.toggle-state.js}"></script>
 		<script type="text/javascript" th:src="@{/js/components/hs.cubeportfolio.js}"></script>
-		<script type="text/javascript" th:src="@{/js/components/hs.malihu-scrollbar.js}"></script>
 		
 		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 		
 		<script>
 			$(window).on('load', function() {
-				// init header
 				$('.js-breadcrumb-menu').HSMegaMenu({
 					event: 'hover',
 					pageContainer: $('.container'),
@@ -75,7 +72,6 @@
 			});
 			
 			$(document).on('ready', function () {
-				// initialization of header
 				$.HSCore.components.HSHeader.init($('#header'));
 				$.HSCore.components.HSDatatables.init('.js-datatable');
 				$.HSCore.components.HSToggleState.init('.js-toggle-state');

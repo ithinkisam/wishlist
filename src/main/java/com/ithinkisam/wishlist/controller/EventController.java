@@ -2,10 +2,12 @@ package com.ithinkisam.wishlist.controller;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,9 +27,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ithinkisam.wishlist.api.exception.ErrorCode;
 import com.ithinkisam.wishlist.api.exception.PayloadException;
 import com.ithinkisam.wishlist.model.Event;
+import com.ithinkisam.wishlist.model.GiftExchangeAssignment;
 import com.ithinkisam.wishlist.model.User;
 import com.ithinkisam.wishlist.repository.EventRepository;
 import com.ithinkisam.wishlist.repository.UserRepository;
+import com.ithinkisam.wishlist.secretsanta.Rule;
+import com.ithinkisam.wishlist.secretsanta.SecretSantaAssignmentCalculator;
 
 @Controller
 @RequestMapping("/events")
@@ -244,6 +249,61 @@ public class EventController {
 		event.getAdmins().remove(adminToRemove);
 		eventRepository.save(event);
 		return "OK";
+	}
+	
+	@PostMapping("/{id}/secret-santa")
+	public String createSecretSanta(@PathVariable("id") Integer eventId,
+			@RequestParam("ss-assignee") List<Integer> assignees,
+			@RequestParam("ss-recipient") List<Integer> recipients) {
+		
+		Event event = eventRepository.findById(eventId).orElseThrow(() ->
+				new PayloadException(ErrorCode.EVENT.notFound(), eventId, HttpStatus.NOT_FOUND));
+		
+		Set<Rule<Integer>> exclusionRules = new HashSet<>();
+		int ruleSize = Integer.min(assignees.size(), recipients.size());
+		for (int i = 0; i < ruleSize; i++) {
+			if (assignees.get(i) != null && recipients.get(i) != null) {
+				exclusionRules.add(new Rule<Integer>(assignees.get(i), recipients.get(i)));
+			}
+		}
+		
+		Set<Integer> memberIds = event.getMembers().stream().map(e -> e.getId()).collect(Collectors.toSet());
+		
+		System.out.println("memberIds: " + memberIds);
+		System.out.println("exclusionRules: " + exclusionRules);;
+		
+		SecretSantaAssignmentCalculator calculator = new SecretSantaAssignmentCalculator();
+		Set<Rule<Integer>> calculatedAssignments = calculator.assign(memberIds, exclusionRules);
+		
+		System.out.println("calculatedAssignments: " + calculatedAssignments);
+		
+		event.getAssignments().clear();
+		for (Rule<Integer> ssAssignment : calculatedAssignments) {
+			GiftExchangeAssignment assignment = new GiftExchangeAssignment();
+			assignment.setEvent(event);
+			
+			Optional<User> assignee = userRepository.findById(ssAssignment.getAssignee());
+			Optional<User> recipient = userRepository.findById(ssAssignment.getRecipient());
+			if (assignee.isPresent() && recipient.isPresent()) {
+				assignment.setAssignee(assignee.get());
+				assignment.setRecipient(recipient.get());
+				event.getAssignments().add(assignment);
+			}
+		}
+		eventRepository.save(event);
+		
+		return "redirect:/events/" + eventId + "?secretSantaAssigned";
+	}
+	
+	@PostMapping("/{id}/secret-santa/reset")
+	public String createSecretSanta(@PathVariable("id") Integer eventId) {
+		Event event = eventRepository.findById(eventId).orElseThrow(() ->
+				new PayloadException(ErrorCode.EVENT.notFound(), eventId, HttpStatus.NOT_FOUND));
+		
+		event.getAssignments().clear();
+		eventRepository.save(event);
+		
+		return "redirect:/events/" + eventId + "?secretSantaReset";
 	}
 	
 }

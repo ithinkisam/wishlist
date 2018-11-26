@@ -14,6 +14,16 @@
 	<div class="page-header">
 		<h1 class="display-4" th:attr="title=${event.description}" th:text="${event.title}">Event title</h1>
 		<h2><span th:text="${#temporals.format(event.date, 'MMMM d, yyyy h:mma')}"></span> - <small class="text-muted" th:text="${event.location}"></small></h2>
+		<div th:if="${param.secretSantaAssigned != null}" class="alert alert-success">
+			Congrats! Secret Santas have been assigned!
+		</div>
+		<div th:if="${param.secretSantaReset != null}" class="alert alert-warning">
+			Secret Santa assignments have been reset.
+		</div>
+		<div th:if="${!event.assignments.isEmpty()}" class="alert alert-info">
+			Secret Santas have been drawn for this event. Make sure you buy something
+			for the person below marked with a star (<i class="fal fa-star"></i>).
+		</div>
 	</div>
 	<hr>
 	
@@ -28,13 +38,11 @@
 						<a class="event-nav-link manage-event-link dropdown-item" data-toggle="tab"
 								role="tab" href="#event-manage-detail">
 							Edit event details
-						</a>
-						<!-- 
+						</a> 
 						<a class="event-nav-link manage-event-link dropdown-item" data-toggle="tab"
 								role="tab" href="#event-manage-secret-santa">
 							Secret Santa
 						</a>
-						 -->
 						<div class="dropdown-divider"></div>
 						<a class="event-nav-link manage-event-link dropdown-item" data-toggle="tab"
 								th:classappend="${members.isEmpty() ? 'active' : ''}"
@@ -50,9 +58,11 @@
 				<li th:each="member,iter : ${members}" th:if="${member != user}"
 						class="event-nav-link nav-item mx-2 my-1">
 					<a class="nav-link" data-toggle="tab" role="tab"
-						th:classappend="${iter.first || (iter.index == 1 && members[0] == user)} ? 'active' : ''"
-						th:href="@{#event-member-{memberId}(memberId=${member.id})}"
-						th:text="${member.firstName}"></a>
+							th:classappend="${iter.first || (iter.index == 1 && members[0] == user)} ? 'active' : ''"
+							th:href="@{#event-member-{memberId}(memberId=${member.id})}">
+						<i th:if="${event.getAssignmentByUserId(user) != null && event.getAssignmentByUserId(user).recipient == member}" class="fal fa-star"></i>
+						<span th:text="${member.firstName}"></span>
+					</a>
 				</li>
 				<li th:each="member : ${members}" th:if="${member == user}"
 						class="nav-item mx-2 my-1">
@@ -95,6 +105,10 @@
 						th:if="${member != user}"
 						th:classappend="${iter.first || (iter.index == 1 && members[0] == user)} ? 'show active' : ''">
 					<h2 class="pl-2"><strong th:text="${member.firstName}"></strong></h2>
+					
+					<div class="alert alert-info" th:if="${event.getAssignmentByUserId(user) != null && event.getAssignmentByUserId(user).recipient == member}">
+						You are assigned as this person's Secret Santa! Make sure you buy them something!
+					</div>
 					
 					<div class="table-responsive-md u-datatable">
 						<table th:id="'wish-table-' + ${member.id}" class="wish-table table table-borderless table-stripe u-datatable__striped u-datatable__content mb-5">

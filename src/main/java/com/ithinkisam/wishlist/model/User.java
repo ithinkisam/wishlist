@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -59,6 +60,11 @@ public class User {
 		orphanRemoval = true
 	)
 	private List<Wish> wishes;
+	
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "managed_user_relationship", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "managed_user_id"))
+	@OrderBy("firstName")
+	private List<ManagedUser> managedUsers;
 	
 	public void addProfile(UserProfile profile) {
 		profiles.add(profile);

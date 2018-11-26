@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.com">
+<head>
+		<title>Error</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		
+		<!-- Google Fonts -->
+		<link href="//fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+		
+		<!-- Common styles -->
+		<link th:href="@{/vendor/font-awesome/css/fontawesome-all.min.css}" rel="stylesheet">
+		<link th:href="@{/css/fontawesome-pro-all.min.css}" rel="stylesheet">
+		<link th:href="@{/css/theme.css}" rel="stylesheet">
+        <link th:href="@{/css/custom.css}" rel="stylesheet">
+	</head>
+<body class="bg-img-hero-fixed" style="background-image: url(/svg/illustrations/error-404.svg);">
+	<header id="header" class="u-header u-header--bg-transparent u-header--abs-top">
+		<div class="u-header__section">
+			<div class="container">
+				<nav class="navbar navbar-expand u-header__navbar">
+					<a class="navbar-brand u-header__navbar-brand u-header__navbar-brand-center" th:href="@{/}">
+						<i class="fal fa-gift fa-2x"></i>
+						<span class="u-header__navbar-brand-text font-weight-light">Wishlist</span>
+					</a>
+					
+					<div class="ml-auto"></div>
+				</nav>
+			</div>
+		</div>
+	</header>
+
+	<main id="content" role="main">
+		<div class="d-lg-flex">
+			<div class="container d-lg-flex align-items-lg-center min-height-lg-100vh space-4">
+				<div class="w-lg-60 w-xl-50">
+					<!-- Title -->
+					<div class="mb-5">
+						<h1 class="text-primary font-weight-normal">
+							Page not <span class="font-weight-semi-bold">found</span>
+						</h1>
+						<p class="mb-0">Oops! Looks like you found a bad link.</p>
+						<p>
+							If you think this is a problem with us, please <a href="#">tell us</a>.
+						</p>
+					</div>
+					<!-- End Title -->
+					<a class="btn btn-primary btn-wide transition-3d-hover" th:href="@{/login}">Return to Home</a>
+				</div>
+			</div>
+		</div>
+	</main>
+	
+	<!-- Common scripts -->
+	<script type="text/javascript" th:src="@{/vendor/jquery/dist/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/vendor/jquery-migrate/dist/jquery-migrate.min.js}"></script>
+	<script type="text/javascript" th:src="@{/vendor/popper.js/dist/umd/popper.min.js}"></script>
+	<script type="text/javascript" th:src="@{/vendor/bootstrap/bootstrap.min.js}"></script>
+	<script type="text/javascript" th:src="@{/vendor/svg-injector/dist/svg-injector.min.js}"></script>
+	
+	<script type="text/javascript" th:src="@{/js/hs.core.js}"></script>
+	<script type="text/javascript" th:src="@{/js/components/hs.svg-injector.js}"></script>
+	
+	<script>
+		$(document).on('ready', function () {
+			$.HSCore.components.HSSVGIngector.init('.js-svg-injector');
+		});
+	</script>
+		
+</body>
+</html>
