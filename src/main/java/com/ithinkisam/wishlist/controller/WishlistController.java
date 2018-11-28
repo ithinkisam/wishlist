@@ -136,7 +136,6 @@ public class WishlistController {
 	@PostMapping("/wish/{id}/references")
 	@ResponseBody
 	public Reference addReference(@PathVariable(name = "id") Integer wishId, String url) throws MalformedURLException {
-		System.out.println("URL: " + url);
 		Optional<Wish> wish = wishRepository.findById(wishId);
 		if (wish.isPresent()) {
 			Reference newRef = new Reference();

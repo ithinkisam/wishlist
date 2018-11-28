@@ -40,6 +40,7 @@
 			<p><strong>Be sure to include rules for both sides of the draw. For example,
 				Bill cannot draw Sally <em>and</em> Sally cannot draw Bill.</strong></p>
 			<form id="secret-santa-form" th:action="@{/events/{eventId}/secret-santa(eventId=${event.id})}" method="post">
+				<h4>Exclusion rules</h4>
 				<div class="input-group mb-3">
 					<select class="custom-select" name="ss-assignee">
 						<option value="">(Choose one)</option>
@@ -53,8 +54,7 @@
 								th:value="${member.id}" th:text="${member.firstName}"></option>
 					</select>
 				</div>
-				<button type="button" id="add-secret-santa-rule-btn" class="btn btn-primary">Add another rule</button>
-				
+				<button type="button" id="add-secret-santa-rule-btn" class="btn btn-primary btn-sm mb-3">Add another rule</button>
 				<div id="secret-santa-rule-template" class="input-group mb-3" style="display: none;">
 					<select class="custom-select" name="ss-assignee">
 						<option value="">(Choose one)</option>
@@ -65,6 +65,23 @@
 					<select class="custom-select" name="ss-recipient">
 						<option value="">(Choose one)</option>
 						<option th:each="member : ${event.members}" th:if="${members != user}"
+								th:value="${member.id}" th:text="${member.firstName}"></option>
+					</select>
+				</div>
+				
+				<h4 class="mt-3">Members to exclude</h4>
+				<div class="input-group mb-3">
+					<select class="custom-select" name="ss-exclusion">
+						<option value="">(Choose one)</option>
+						<option th:each="member : ${event.members}"
+								th:value="${member.id}" th:text="${member.firstName}"></option>
+					</select>
+				</div>
+				<button type="button" id="add-secret-santa-exclusion-btn" class="btn btn-primary btn-sm">Exclude this user from the draw</button>
+				<div id="secret-santa-exclusion-template" class="input-group mb-3" style="display: none;">
+					<select class="custom-select" name="ss-exclusion">
+						<option value="">(Choose one)</option>
+						<option th:each="member : ${event.members}"
 								th:value="${member.id}" th:text="${member.firstName}"></option>
 					</select>
 				</div>
@@ -102,7 +119,7 @@
 					</thead>
 					<tbody>
 						<tr th:each="assignment : ${event.assignments}">
-							<td>**********</td>
+							<td th:text="${event.members.contains(user)} ? '**********' : ${assignment.assignee.firstName}">**********</td>
 							<td th:text="${assignment.recipient.firstName}"></td>
 						</tr>
 					</tbody>

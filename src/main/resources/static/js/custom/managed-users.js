@@ -26,12 +26,6 @@ function formatNewReferenceRow(wishId, isEven) {
 
 $(function() {
 	
-	$('.managed-user-table').dataTable({
-		ordering: false,
-		searching: false,
-		paging: false
-	});
-	
 	var initReferenceDropdowns = function() {
 		$('.show-refs').click(function(e, config) {
 			var showRefsLink = $(this);
@@ -39,7 +33,7 @@ $(function() {
 			var row = $('#wish-table').DataTable().row(tr);
 			var wishId = $(this).data('wish-id');
 			
-			$.get("/wish/" + wishId, function(wish) {
+			$.get("/managed-wishes/" + wishId, function(wish) {
 				if (row.child.isShown()) {
 					row.child.hide();
 					tr.removeClass('shown');
@@ -52,7 +46,7 @@ $(function() {
 					row.child(rows).show();
 					row.child().find('button.delete-ref').click(function() {
 						var refId = $(this).data('reference-id');
-						$.post("/references/" + refId + "/delete", function(result) {
+						$.post("/managed-wishes/references/" + refId + "/delete", function(result) {
 							if (result == "OK") {
 								$('button.delete-ref[data-reference-id=' + refId + ']').parents('tr').remove();
 							}
@@ -62,12 +56,12 @@ $(function() {
 						var addRefButton = $(this);
 						var wishId = addRefButton.data('wish-id');
 						var url = addRefButton.parents('tr').find('input').val();
-						$.post("/wish/" + wishId + "/references", {
+						$.post("/managed-wishes/" + wishId + "/references", {
 							'url': url
 						}, function(newRef) {
 							var newRow = formatReferenceRow(newRef, wishId, tr.hasClass('even'));
 							newRow.find('button.delete-ref').click(function() {
-								$.post("/references/" + newRef.id + "/delete", function(deleteResult) {
+								$.post("/managed-wishes/references/" + newRef.id + "/delete", function(deleteResult) {
 									if (deleteResult == "OK") {
 										$('button.delete-ref[data-reference-id=' + newRef.id + ']').parents('tr').remove();
 									}
@@ -92,9 +86,6 @@ $(function() {
 		ordering: false,
 		paging: false,
 		stripeClasses: [ 'odd wl-odd-darker', 'even' ],
-		language: {
-			zeroRecords: "Either you don't want anything or you haven't figured out this website yet..."
-		},
 		initComplete: initReferenceDropdowns
 	});
 
@@ -103,7 +94,7 @@ $(function() {
 		var wishId = a.data('wish-id');
 		$('#edit-wish-id').val(a.data('wish-id'));
 		
-		$.get("/wish/" + wishId, function(wish) {
+		$.get("/managed-wishes/" + wishId, function(wish) {
 			$('#edit-wish-description').val(wish.description);
 			$('#edit-wish-description-orig').val(wish.description);
 			var priceVal = wish.price == null ? "" : wish.price.range;
@@ -123,6 +114,12 @@ $(function() {
 		var wishId = a.data('wish-id');
 		$('#delete-wish-id').val(a.data('wish-id'));
 		$('#delete-wish-description').html(a.data('wish-description'));
+	});
+	
+	$('#managed-wish-table, #managed-user-event-table, #managed-user-guardian-table').dataTable({
+		paging: false,
+		ordering: false,
+		searching: false
 	});
 	
 });

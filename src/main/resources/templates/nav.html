@@ -50,22 +50,6 @@
 							<nav class="js-breadcrumb-menu navbar navbar-expand-lg u-header__navbar u-header__navbar--no-space hs-menu-initialized hs-menu-horizontal">
 								<div id="breadcrumbNavBar" class="collapse navbar-collapse u-header__navbar-colapse">
 									<ul class="navbar-nav u-header__navbar-nav">
-										<!-- 
-										<li class="nav-item hs-has-sub-menu u-header__nav-item" data-event="hover" data-animation-in="slideInUp" data-animation-out="fadeOut">
-											<a id="generalDropdown" class="nav-link u-header__nav-link u-header__nav-link-toggle" href="javascript:;" aria-haspopup="true" aria-expanded="false" aria-labelledby="generalDropdownMenu">
-												<i class="fas fa-user fa-fw"></i>
-												<span th:text="${user.firstName}"></span> 
-											</a>
-											<ul id="generalDropdownMenu" class="hs-sub-menu u-header__sub-menu u-header__sub-menu--spacer" style="min-width: 230px; display: none">
-												<li>
-													<a class="nav-link u-header__sub-menu-nav-link" href="">Account</a>
-												</li>
-												<li>
-													<a class="nav-link u-header__sub-menu-nav-link" th:href="@{/logout}">Logout</i></a>
-												</li>
-											</ul>
-										</li>
-										 -->
 										<li class="nav-item u-header__nav-item">
 											<a class="nav-link u-header__nav-link" th:href="@{/wishlist}">Wishlist</a>
 										</li>
@@ -81,8 +65,8 @@
 											<ul id="profileSubMenu" class="hs-sub-menu u-header__sub-menu" aria-labelledby="profileMegaMenu" style="min-width: 230px;">
 												<!-- 
 												<li><a class="nav-link u-header__sub-menu-nav-link" th:href="@{/account}">My Account</a></li>
-												<li><a class="nav-link u-header__sub-menu-nav-link" th:href="@{/managed-users}">Managed Users</a></li>
 												 -->
+												<li><a class="nav-link u-header__sub-menu-nav-link" th:href="@{/managed-users}">Managed Users</a></li>
 												<li><a class="nav-link u-header__sub-menu-nav-link" th:href="@{/logout}">Logout</a></li>
 											</ul>
 											

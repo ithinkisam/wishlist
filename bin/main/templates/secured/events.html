@@ -52,7 +52,10 @@
 					<div class="cbp-caption-defaultWrap p-3" style="min-height: 13rem">
 						<h5 th:text="${event.title}">Event title</h5>
 						<p class="small text-muted" th:text="${event.description}">Description goes here</p>
-						<p class="small text-muted" th:text="${event.members.size()} + ' members'"># members</p>
+						<p class="small text-muted"><span th:text="${event.members.size()} + ' members'"></span>
+							<span th:if="${event.managedUsers.size() == 1}" th:text="'+ ' + ${event.managedUsers.size() + ' kid'}"></span>
+							<span th:if="${event.managedUsers.size() > 1}" th:text="'+ ' + ${event.managedUsers.size() + ' kids'}"></span>
+						</p>
 					</div>
 					<div class="cbp-caption-activeWrap bg-primary">
 						<div class="cbp-l-caption-alignCenter">

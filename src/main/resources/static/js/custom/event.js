@@ -197,6 +197,15 @@ $(function() {
 		newRule.show('normal');
 		return false;
 	});
+
+	$('#add-secret-santa-exclusion-btn').click(function(e) {
+		e.preventDefault();
+		var newExclusion = $('#secret-santa-exclusion-template').clone();
+		newExclusion.removeAttr('id');
+		newExclusion.insertBefore($('#add-secret-santa-exclusion-btn'));
+		newExclusion.show('normal');
+		return false;
+	});
 	
 	$('a[href="#event-manage-secret-santa"]').on('shown.bs.tab', function() {
 		$('#secret-santa-draws-table').DataTable({

@@ -5,13 +5,11 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.ithinkisam.wishlist.model.User;
+import com.ithinkisam.wishlist.model.ManagedWish;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface ManagedWishRepository extends JpaRepository<ManagedWish, Integer> {
 
-	User findByEmail(String email);
-	
-	List<User> findByManagedUsersId(Integer id);
+	List<ManagedWish> findByUserId(Integer userId);
 	
 }

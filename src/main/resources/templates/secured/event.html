@@ -55,6 +55,10 @@
 						</a>
 					</div>
 				</li>
+				<li class="dropdown-divider" th:if="${event.admins.contains(user)}"></li>
+				<li class="nav-item mx-3 my-1">
+					<strong>Members</strong>
+				</li>
 				<li th:each="member,iter : ${members}" th:if="${member != user}"
 						class="event-nav-link nav-item mx-2 my-1">
 					<a class="nav-link" data-toggle="tab" role="tab"
@@ -67,6 +71,16 @@
 				<li th:each="member : ${members}" th:if="${member == user}"
 						class="nav-item mx-2 my-1">
 					<a class="nav-link" th:text="${member.firstName}"></a> 
+				</li>
+				<li class="dropdown-divider" th:if="${!event.managedUsers.isEmpty()}"></li>
+				<li class="nav-item mx-3 my-1" th:if="${!event.managedUsers.isEmpty()}">
+					<strong>Kids</strong>
+				</li>
+				<li th:each="member : ${event.managedUsers}" class="nav-item mx-2 my-1">
+					<a class="nav-link" data-toggle="tab" role="tab"
+							th:href="@{#event-managed-user-{memberId}(memberId=${member.id})}">
+						<span th:text="${member.firstName}"></span>
+					</a>
 				</li>
 			</ul>
 		</div>
@@ -168,6 +182,78 @@
 									<td>
 										<button style="display:none;" class="btn btn-xs btn-primary purchase-btn" th:attr="data-wish-id=${wish.id}">Purchase</button>
 										<button th:if="${wish.purchaser == user}" class="btn btn-xs btn-secondary return-btn" th:attr="data-wish-id=${wish.id}">&nbsp;&nbsp;Return&nbsp;&nbsp;&nbsp;</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="tab-pane fade" th:each="member,iter : ${event.managedUsers}"
+						th:id="'event-managed-user-' + ${member.id}">
+					<h2 class="pl-2"><strong th:text="${member.firstName}"></strong></h2>
+					
+					<div class="table-responsive-md u-datatable">
+						<table th:id="'wish-table-' + ${member.id}" class="wish-table table table-borderless table-stripe u-datatable__striped u-datatable__content mb-5">
+							<thead>
+								<tr class="text-uppercase font-size-1">
+									<th scope="col" class="font-weight-medium">
+										<div class="d-flex justify-content-between align-items-center">
+											Description
+										</div>
+									</th>
+									<th scope="col" class="font-weight-medium">
+										<div class="d-flex justify-content-between align-items-center">
+											Price
+										</div>
+									</th>
+									<!-- 
+									<th scope="col" class="font-weight-medium">
+										<div class="d-flex justify-content-between align-items-center">
+											Quantity
+										</div>
+									</th>
+									 -->
+									<th scope="col" class="font-weight-medium">
+										<div class="d-flex justify-content-between align-items-center">
+											Links
+										</div>
+									</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<!-- Available wishes -->
+								<tr th:each="wish : ${member.wishes}" th:if="${!wish.purchased}">
+									<td th:text="${wish.description}"></td>
+									<td th:text="${wish.price != null ? wish.price.currency : 'N/A'}"></td>
+									<!-- <td th:text="${wish.quantity}"></td> -->
+									<td>
+										<span th:if="${wish.references.isEmpty()}">N/A</span>
+										<a th:each="reference : ${wish.references}" th:href="${reference.url}" target="_blank"><i class="fal fa-link"></i></a>
+									</td>
+									<td>
+										<!-- 
+										<button class="btn btn-xs btn-primary purchase-managed-user-btn" th:attr="data-wish-id=${wish.id}">Purchase</button>
+										<button style="display:none;" class="btn btn-xs btn-secondary return-managed-user-btn" th:attr="data-wish-id=${wish.id}">&nbsp;&nbsp;Return&nbsp;&nbsp;&nbsp;</button>
+										 -->
+									</td>
+								</tr>
+								
+								<!-- Purchased wishes -->
+								<tr th:each="wish : ${member.wishes}" th:if="${wish.purchased}" class="purchased"
+										th:classappend="${wish.purchaser == user} ? 'table-success' : 'table-danger'">
+									<td th:text="${wish.description}"></td>
+									<td th:text="${wish.price != null ? wish.price.currency : 'N/A'}"></td>
+									<!-- <td th:text="${wish.quantity}"></td> -->
+									<td>
+										<span th:if="${wish.references.isEmpty()}">N/A</span>
+										<a th:each="reference : ${wish.references}" th:href="${reference.url}" target="_blank"><i class="fal fa-link"></i></a>
+									</td>
+									<td>
+										<!-- 
+										<button style="display:none;" class="btn btn-xs btn-primary purchase-managed-user-btn" th:attr="data-wish-id=${wish.id}">Purchase</button>
+										<button th:if="${wish.purchaser == user}" class="btn btn-xs btn-secondary return-managed-user-btn" th:attr="data-wish-id=${wish.id}">&nbsp;&nbsp;Return&nbsp;&nbsp;&nbsp;</button>
+										 -->
 									</td>
 								</tr>
 							</tbody>

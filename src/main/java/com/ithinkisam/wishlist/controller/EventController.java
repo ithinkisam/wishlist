@@ -254,7 +254,8 @@ public class EventController {
 	@PostMapping("/{id}/secret-santa")
 	public String createSecretSanta(@PathVariable("id") Integer eventId,
 			@RequestParam("ss-assignee") List<Integer> assignees,
-			@RequestParam("ss-recipient") List<Integer> recipients) {
+			@RequestParam("ss-recipient") List<Integer> recipients,
+			@RequestParam("ss-exclusion") Set<Integer> exclusions) {
 		
 		Event event = eventRepository.findById(eventId).orElseThrow(() ->
 				new PayloadException(ErrorCode.EVENT.notFound(), eventId, HttpStatus.NOT_FOUND));
@@ -262,12 +263,14 @@ public class EventController {
 		Set<Rule<Integer>> exclusionRules = new HashSet<>();
 		int ruleSize = Integer.min(assignees.size(), recipients.size());
 		for (int i = 0; i < ruleSize; i++) {
-			if (assignees.get(i) != null && recipients.get(i) != null) {
+			if (assignees.get(i) != null && recipients.get(i) != null
+					&& !exclusions.contains(assignees.get(i)) && !exclusions.contains(recipients.get(i))) {
 				exclusionRules.add(new Rule<Integer>(assignees.get(i), recipients.get(i)));
 			}
 		}
 		
 		Set<Integer> memberIds = event.getMembers().stream().map(e -> e.getId()).collect(Collectors.toSet());
+		memberIds.removeIf(m -> exclusions.contains(m));
 		
 		System.out.println("memberIds: " + memberIds);
 		System.out.println("exclusionRules: " + exclusionRules);;
