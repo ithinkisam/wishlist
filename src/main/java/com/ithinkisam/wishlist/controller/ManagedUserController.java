@@ -219,4 +219,20 @@ public class ManagedUserController {
 		return "redirect:/managed-users/" + managedUserId;
 	}
 	
+	@PostMapping("/{id}/wishlist-description")
+	public String updateDescription(@PathVariable("id") Integer managedUserId,
+			@RequestParam("description") String wishlistDescription) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User user = userRepository.findByEmail(auth.getName());
+		
+		for (ManagedUser existing : user.getManagedUsers()) {
+			if (existing.getId() == managedUserId) {
+				existing.setWishlistDescription(wishlistDescription);
+				managedUserRepository.save(existing);
+				break;
+			}
+		}
+		return "redirect:/managed-users/" + managedUserId;
+	}
+	
 }

@@ -45,6 +45,14 @@
 					<h2 class="pl-2 pb-2 border-bottom"><strong th:text="${managedUser.firstName}"></strong></h2>
 					
 					<div class="clearfix mb-5">
+						<form th:action="@{/managed-users/{userId}/wishlist-description(userId=${managedUser.id})}" method="post">
+							<div class="form-group">
+								<textarea class="form-control" name="description" placeholder="Wishlist description..." th:text="${managedUser.wishlistDescription}"></textarea>
+							</div>
+							<button class="btn btn-primary btn-sm transition-3d-hover float-right" type="submit">Update description</button>
+						</form>
+					</div>
+					<div class="clearfix mb-5">
 						<h4>Wishes</h4>
 						<div class="table-responsive-md u-datatable">
 							<table id="wish-table" class="table table-borderless table-stripe u-datatable__striped u-datatable__content">
@@ -229,7 +237,7 @@
 								<input type="text" class="form-control" name="email" placeholder="Email" required>
 								<small class="form-text text-muted">A guardian will be able to manage this user's information.</small>
 							</div>
-							<button type="submit" class="btn btn-primary btn-sm">Add Guardian</button>
+							<button type="submit" class="btn btn-primary btn-sm transition-3d-hover">Add Guardian</button>
 						</form>
 						<!-- End Add guardian form -->
 					</div>

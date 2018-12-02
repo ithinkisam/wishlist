@@ -20,9 +20,9 @@
 		<div th:if="${param.secretSantaReset != null}" class="alert alert-warning">
 			Secret Santa assignments have been reset.
 		</div>
-		<div th:if="${!event.assignments.isEmpty()}" class="alert alert-info">
-			Secret Santas have been drawn for this event. Make sure you buy something
-			for the person below marked with a star (<i class="fal fa-star"></i>).
+		<div th:if="${!event.assignments.isEmpty()}" class="alert alert-secondary">
+			<strong>Secret Santas have been drawn for this event.</strong> Make sure
+			you buy something for the person below marked with a star (<i class="fal fa-star"></i>).
 		</div>
 	</div>
 	<hr>
@@ -192,6 +192,8 @@
 						th:id="'event-managed-user-' + ${member.id}">
 					<h2 class="pl-2"><strong th:text="${member.firstName}"></strong></h2>
 					
+					<p class="lead" th:text="${member.wishlistDescription}"></p>
+					
 					<div class="table-responsive-md u-datatable">
 						<table th:id="'wish-table-' + ${member.id}" class="wish-table table table-borderless table-stripe u-datatable__striped u-datatable__content mb-5">
 							<thead>
@@ -232,10 +234,8 @@
 										<a th:each="reference : ${wish.references}" th:href="${reference.url}" target="_blank"><i class="fal fa-link"></i></a>
 									</td>
 									<td>
-										<!-- 
-										<button class="btn btn-xs btn-primary purchase-managed-user-btn" th:attr="data-wish-id=${wish.id}">Purchase</button>
-										<button style="display:none;" class="btn btn-xs btn-secondary return-managed-user-btn" th:attr="data-wish-id=${wish.id}">&nbsp;&nbsp;Return&nbsp;&nbsp;&nbsp;</button>
-										 -->
+										<button class="btn btn-xs btn-primary purchase-managed-wish-btn" th:attr="data-wish-id=${wish.id}">Purchase</button>
+										<button style="display:none;" class="btn btn-xs btn-secondary return-managed-wish-btn" th:attr="data-wish-id=${wish.id}">&nbsp;&nbsp;Return&nbsp;&nbsp;&nbsp;</button>
 									</td>
 								</tr>
 								
@@ -250,10 +250,8 @@
 										<a th:each="reference : ${wish.references}" th:href="${reference.url}" target="_blank"><i class="fal fa-link"></i></a>
 									</td>
 									<td>
-										<!-- 
-										<button style="display:none;" class="btn btn-xs btn-primary purchase-managed-user-btn" th:attr="data-wish-id=${wish.id}">Purchase</button>
-										<button th:if="${wish.purchaser == user}" class="btn btn-xs btn-secondary return-managed-user-btn" th:attr="data-wish-id=${wish.id}">&nbsp;&nbsp;Return&nbsp;&nbsp;&nbsp;</button>
-										 -->
+										<button style="display:none;" class="btn btn-xs btn-primary purchase-managed-wish-btn" th:attr="data-wish-id=${wish.id}">Purchase</button>
+										<button th:if="${wish.purchaser == user}" class="btn btn-xs btn-secondary return-managed-wish-btn" th:attr="data-wish-id=${wish.id}">&nbsp;&nbsp;Return&nbsp;&nbsp;&nbsp;</button>
 									</td>
 								</tr>
 							</tbody>

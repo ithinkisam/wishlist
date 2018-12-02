@@ -40,6 +40,8 @@ public class User {
 	
 	@Column(name = "last_name")
 	private String lastName;
+
+	private String wishlistDescription;
 	
 	private Boolean active;
 	

@@ -44,6 +44,22 @@ $(function() {
 			clone.show('normal');
 		});
 	});
+
+	$('.purchase-managed-wish-btn').click(function() {
+		var wishId = $(this).data('wish-id');
+		var tr = $(this).parents('tr');
+		var tableId = $(this).parents('table').attr('id');
+		$.post('/api/managed-wishes/' + wishId + '/purchase', function(wish) {
+			var clone = tr.clone(true);
+			clone.hide();
+			tr.hide('normal').remove();
+			clone.addClass('purchased table-success');
+			clone.find('.return-managed-wish-btn').show();
+			clone.find('.purchase-managed-wish-btn').hide();
+			$('#' + tableId).find('tbody').append(clone);
+			clone.show('normal');
+		});
+	});
 	
 	$('.return-btn').click(function() {
 		var wishId = $(this).data('wish-id');
@@ -56,6 +72,22 @@ $(function() {
 			clone.removeClass('purchased table-success');
 			clone.find('.purchase-btn').show();
 			clone.find('.return-btn').hide();
+			$('#' + tableId).find('tbody').prepend(clone);
+			clone.show('normal');
+		});
+	});
+
+	$('.return-managed-wish-btn').click(function() {
+		var wishId = $(this).data('wish-id');
+		var tr = $(this).parents('tr');
+		var tableId = $(this).parents('table').attr('id');
+		$.post('/api/managed-wishes/' + wishId + '/unpurchase', function(wish) {
+			var clone = tr.clone(true);
+			clone.hide();
+			tr.hide('normal').remove();
+			clone.removeClass('purchased table-success');
+			clone.find('.purchase-managed-wish-btn').show();
+			clone.find('.return-managed-wish-btn').hide();
 			$('#' + tableId).find('tbody').prepend(clone);
 			clone.show('normal');
 		});

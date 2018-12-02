@@ -30,6 +30,8 @@ public class ManagedUser {
 	@NotEmpty
 	private String lastName;
 	
+	private String wishlistDescription;
+	
 	@OneToMany(
 			mappedBy = "user",
 			cascade = CascadeType.ALL,
